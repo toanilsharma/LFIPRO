@@ -1,0 +1,36 @@
+import { Section, Template, TemplateKey } from './types';
+
+export const SECTIONS: Section[] = [
+    { id: 'template', name: '1. Select Template', icon: '📋' },
+    { id: 'problem', name: '2. Problem Context', icon: '❗' },
+    { id: 'rootcause', name: '3. Root Cause', icon: '🔍' },
+    { id: 'lessons', name: '4. Lessons Learned', icon: '💡' },
+    { id: 'actions', name: '5. Implementation', icon: '⚡' },
+    { id: 'prevention', name: '6. Prevention', icon: '🛡️' },
+    { id: 'sharing', name: '7. Knowledge Sharing', icon: '🌍' },
+    { id: 'preview', name: '8. Review & Export', icon: '📄' },
+];
+
+export const TEMPLATES: Template[] = [
+    { id: 'iso9001', icon: '🏭', name: 'ISO 9001 CAPA', description: 'Perfect for manufacturing and quality management systems. Emphasizes corrective and preventive actions.', standards: 'ISO 9001:2015 | ISO/TS 16949' },
+    { id: 'apqp', icon: '🚗', name: 'APQP/8D', description: 'Automotive industry standard. Team-based problem solving with systematic root cause elimination.', standards: 'APQP | 8D Methodology | AIAG' },
+    { id: 'sixsigma', icon: '📊', name: 'Six Sigma DMAIC', description: 'Data-driven approach focusing on measurable improvements. Ideal for process optimization.', standards: 'Six Sigma | DMAIC | Lean' },
+    { id: 'a3', icon: '📑', name: 'A3 Thinking', description: 'Toyota Production System approach. Concise, visual problem-solving focusing on continuous improvement.', standards: 'TPS | Lean Manufacturing | Kaizen' }
+];
+
+export const TEMPLATE_NAMES: Record<string, string> = TEMPLATES.reduce((acc, t) => {
+    acc[t.id] = t.name;
+    return acc;
+}, {} as Record<string, string>);
+
+export const REQUIRED_FIELDS_MAP = {
+    problemTitle: "Problem Title",
+    problemStatement: "Problem Statement & Impact",
+    rootCause: "Root Cause Identified",
+    lessons: "Key Lesson #1",
+    immediateAction: "Immediate Action",
+    correctiveAction: "Corrective Action",
+    systemicAction: "Systemic Improvements",
+    validation: "Effectiveness Validation",
+    horizontal: "Horizontal Deployment Plan"
+};

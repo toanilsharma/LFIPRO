@@ -1,0 +1,40 @@
+
+export type SectionKey = 'template' | 'problem' | 'rootcause' | 'lessons' | 'actions' | 'prevention' | 'sharing' | 'preview';
+
+export type TemplateKey = 'iso9001' | 'apqp' | 'sixsigma' | 'a3';
+
+export interface Section {
+    id: SectionKey;
+    name: string;
+    icon: string;
+}
+
+export interface Template {
+    id: TemplateKey;
+    icon: string;
+    name: string;
+    description: string;
+    standards: string;
+}
+
+export interface LfiData {
+    template: TemplateKey | null;
+    problemTitle: string;
+    problemStatement: string;
+    rcaMethod: string;
+    rootCause: string;
+    lessons: [string, string, string];
+    immediateAction: string;
+    correctiveAction: string;
+    systemicAction: string;
+    validation: string;
+    horizontal: string;
+    audience: string[];
+    distribution: string;
+    tags: string;
+    riskAssessment?: {
+        beforeSeverity: number;
+        beforeLikelihood: number;
+        afterLikelihood: number;
+    } | null;
+}

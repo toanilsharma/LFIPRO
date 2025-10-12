@@ -1,0 +1,5 @@
+{
+  "name": "LFI Pro",
+  "description": "An interactive, AI-powered assistant to help you write world-class Lessons For Implementation (LFI) documents. Get step-by-step guidance, real-time feedback, and AI suggestions to turn incidents into actionable learning.",
+  "requestFramePermissions": []
+}
