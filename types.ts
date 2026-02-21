@@ -1,3 +1,4 @@
+import { ElementType } from 'react';
 
 export type SectionKey = 'template' | 'problem' | 'rootcause' | 'lessons' | 'actions' | 'prevention' | 'sharing' | 'preview';
 
@@ -6,12 +7,12 @@ export type TemplateKey = 'iso9001' | 'apqp' | 'sixsigma' | 'a3';
 export interface Section {
     id: SectionKey;
     name: string;
-    icon: string;
+    icon: ElementType;
 }
 
 export interface Template {
     id: TemplateKey;
-    icon: string;
+    icon: ElementType;
     name: string;
     description: string;
     standards: string;
@@ -19,6 +20,7 @@ export interface Template {
 
 export interface LfiData {
     template: TemplateKey | null;
+    teamMembers: string;
     problemTitle: string;
     problemStatement: string;
     rcaMethod: string;

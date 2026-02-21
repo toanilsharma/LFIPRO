@@ -1,33 +1,66 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { Waypoints, Lightbulb, ShieldCheck } from 'lucide-react';
 
-const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; description: string }> = ({ icon, title, description }) => (
-    <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
-        <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full text-white mb-6" style={{ backgroundImage: 'var(--gradient-1)' }}>
+const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; description: string; index: number }> = ({ icon, title, description, index }) => (
+    <motion.div
+        className="glass-card"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6, delay: index * 0.2 }}
+        whileHover={{ y: -10 }}
+    >
+        <div style={{ width: '4rem', height: '4rem', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: 'rgba(79, 70, 229, 0.2)', color: 'var(--primary)', marginBottom: '1.5rem', marginInline: 'auto' }}>
             {icon}
         </div>
-        <h3 className="text-xl font-bold mb-2">{title}</h3>
-        <p className="text-gray-600">{description}</p>
-    </div>
+        <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>{title}</h3>
+        <p style={{ color: 'var(--text-secondary)' }}>{description}</p>
+    </motion.div>
 );
 
 const FeaturesSection: React.FC = () => {
     return (
         <section id="features" className="text-center">
-            <h2 className="text-3xl font-extrabold text-gray-900 mb-4">Guided, Intelligent & Compliant</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12">Our tool doesn't just give you a blank page. It provides a world-class framework to ensure every LFI is comprehensive, actionable, and ready for global implementation.</p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+            >
+                <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem' }} className="gradient-text">Guided, Intelligent & Compliant</h2>
+                <p style={{ fontSize: '1.125rem', color: 'var(--text-secondary)', maxWidth: '48rem', margin: '0 auto 3rem auto' }}>
+                    Our tool doesn't just give you a blank page. It provides a world-class framework to ensure every LFI is comprehensive, actionable, and ready for global implementation.
+                </p>
+            </motion.div>
+
+            <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, ease: 'easeOut' }}
+                className="max-w-4xl mx-auto mb-20 relative px-4"
+            >
+                <div className="absolute inset-0 bg-indigo-500/10 dark:bg-indigo-500/20 blur-3xl rounded-full translate-y-10"></div>
+                <img src="/hero-network.png" alt="Intelligence Network Architecture" className="w-full h-auto rounded-3xl shadow-2xl relative z-10 border border-white/10 dark:border-gray-800" />
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-8">
                 <FeatureCard
-                    icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-waypoints"><path d="M12 2L6 22l6-4 6 4V2z"/><path d="M12 18l-6-4"/><path d="M12 18l6-4"/></svg>}
+                    index={0}
+                    icon={<Waypoints size={32} />}
                     title="Step-by-Step Guidance"
                     description="Navigate the LFI process with a clear, structured workflow, from problem statement to global knowledge sharing."
                 />
                 <FeatureCard
-                    icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-lightbulb"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>}
+                    index={1}
+                    icon={<Lightbulb size={32} />}
                     title="Real-Time Quality Score"
                     description="Instantly assess the quality and completeness of your document with our intelligent scoring system."
                 />
                 <FeatureCard
-                    icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-shield-check"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>}
+                    index={2}
+                    icon={<ShieldCheck size={32} />}
                     title="Industry Standard Templates"
                     description="Choose from ISO 9001, APQP/8D, Six Sigma, and A3 templates to ensure full compliance with your QMS."
                 />

@@ -1,11 +1,14 @@
-
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 
 interface HeaderProps {
     onNavigate: (view: 'tool' | 'contact' | 'cookie') => void;
+    isDarkMode: boolean;
+    toggleDarkMode: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
+const Header: React.FC<HeaderProps> = ({ onNavigate, isDarkMode, toggleDarkMode }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const navLinks = [
@@ -23,7 +26,6 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
             onNavigate('tool');
-            // Delay scrolling to allow the view to switch back to the main tool if needed
             setTimeout(() => {
                 const targetId = href.substring(1);
                 const targetElement = document.getElementById(targetId);
@@ -39,35 +41,62 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
     };
 
     return (
-        <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-md">
-            <nav className="container mx-auto px-4 lg:px-6 py-4">
-                <div className="flex flex-wrap justify-between items-center">
-                    <a href="#" onClick={(e) => handleNavClick(e, '#tool')} className="flex items-center space-x-2">
-                        <span className="text-2xl font-bold gradient-text">🎯</span>
-                        <span className="text-xl font-extrabold text-gray-800 self-center whitespace-nowrap">LFI Pro</span>
+        <header className="glass-panel mx-4 my-4 p-4 lg:px-8 sticky top-4 z-50 rounded-full">
+            <nav className="container" style={{ padding: 0 }}>
+                <div className="flex justify-between items-center w-full">
+                    <a href="#" onClick={(e) => handleNavClick(e, '#tool')} className="flex items-center gap-2" style={{ textDecoration: 'none' }}>
+                        <span style={{ fontSize: '1.5rem' }}>🎯</span>
+                        <span className="gradient-text font-heading text-xl md:text-2xl font-extrabold m-0">LFI Pro</span>
                     </a>
-                    <div className="hidden lg:flex items-center space-x-8">
+
+                    <div className="hidden lg:flex items-center gap-8">
                         {navLinks.map(link => (
-                            <a key={link.href} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="text-gray-600 hover:text-indigo-600 font-medium transition-colors">{link.text}</a>
+                            <a key={link.href} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium transition-colors">
+                                {link.text}
+                            </a>
                         ))}
                     </div>
-                    <a href="#tool" onClick={(e) => handleNavClick(e, '#tool')} className="hidden lg:inline-block px-6 py-2.5 text-white font-semibold rounded-lg shadow-lg hover:scale-105 transition-transform" style={{ backgroundImage: 'var(--gradient-1)' }}>
-                        Get Started
-                    </a>
-                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                    </button>
-                </div>
-                {isMenuOpen && (
-                    <div className="lg:hidden mt-4 space-y-2">
-                        {navLinks.map(link => (
-                             <a key={link.href} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="block py-2 px-3 text-gray-600 hover:bg-indigo-50 rounded-md">{link.text}</a>
-                        ))}
-                        <a href="#tool" onClick={(e) => handleNavClick(e, '#tool')} className="block mt-2 w-full text-center px-6 py-2.5 text-white font-semibold rounded-lg shadow-lg" style={{ backgroundImage: 'var(--gradient-1)' }}>
+
+                    <div className="flex items-center gap-2 md:gap-4">
+                        <button
+                            onClick={toggleDarkMode}
+                            className="p-2 mr-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-yellow-400 hover:scale-110 transition-transform"
+                            aria-label="Toggle Dark Mode"
+                        >
+                            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+                        </button>
+
+                        <motion.button
+                            onClick={(e: any) => handleNavClick(e, '#tool')}
+                            className="btn btn-primary hidden md:inline-flex"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                        >
                             Get Started
-                        </a>
+                        </motion.button>
+
+                        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 lg:hidden flex text-gray-800 dark:text-gray-200">
+                            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
                     </div>
-                )}
+                </div>
+
+                <AnimatePresence>
+                    {isMenuOpen && (
+                        <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="overflow-hidden mt-4 flex flex-col gap-2 lg:hidden"
+                        >
+                            {navLinks.map(link => (
+                                <a key={link.href} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="block p-3 text-gray-800 dark:text-gray-100 bg-gray-100 dark:bg-white/5 rounded-lg font-medium">
+                                    {link.text}
+                                </a>
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </nav>
         </header>
     );

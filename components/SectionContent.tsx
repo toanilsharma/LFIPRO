@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { LfiData, SectionKey, TemplateKey } from '../types';
 import TemplateSelection from './sections/TemplateSelection';
@@ -10,6 +9,7 @@ import Prevention from './sections/Prevention';
 import KnowledgeSharing from './sections/KnowledgeSharing';
 import ReviewExport from './sections/ReviewExport';
 import { SECTIONS } from '../constants';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface SectionContentProps {
     currentSection: SectionKey;
@@ -21,12 +21,24 @@ interface SectionContentProps {
 }
 
 const SectionHeader: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div className="flex justify-between items-center mb-8 pb-5 border-b-2 border-gray-100">
-        <h2 className="text-3xl font-bold flex items-center gap-4" style={{color: 'var(--primary)'}}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', paddingBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+        <h2 style={{ fontSize: '1.875rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '1rem', color: 'var(--text-primary)', margin: 0 }}>
             {children}
         </h2>
     </div>
 );
+
+const pageVariants = {
+    initial: { opacity: 0, x: 20 },
+    in: { opacity: 1, x: 0 },
+    out: { opacity: 0, x: -20 }
+};
+
+const pageTransition = {
+    type: "tween",
+    ease: "anticipate",
+    duration: 0.4
+};
 
 const SectionContent: React.FC<SectionContentProps> = (props) => {
     const { currentSection, lfiData, updateLfiData, onTemplateSelect, onNext, onPrev } = props;
@@ -58,13 +70,24 @@ const SectionContent: React.FC<SectionContentProps> = (props) => {
     };
 
     return (
-        <div>
+        <motion.div
+            initial="initial"
+            animate="in"
+            exit="out"
+            variants={pageVariants}
+            transition={pageTransition}
+            style={{ width: '100%' }}
+        >
             <SectionHeader>
-                <span className="text-3xl">{currentSectionInfo?.icon}</span>
+                <span style={{ fontSize: '1.875rem', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '3rem', height: '3rem', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-sm)' }}>
+                    {currentSectionInfo && <currentSectionInfo.icon size={30} strokeWidth={2} />}
+                </span>
                 {currentSectionInfo?.name.substring(3)}
             </SectionHeader>
-            {renderSection()}
-        </div>
+            <div style={{ position: 'relative', width: '100%', minHeight: '400px' }}>
+                {renderSection()}
+            </div>
+        </motion.div>
     );
 };
 

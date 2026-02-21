@@ -1,6 +1,6 @@
-
 import React, { useMemo } from 'react';
 import { LfiData } from '../types';
+import { motion } from 'framer-motion';
 
 interface QualityScoreProps {
     lfiData: LfiData;
@@ -9,7 +9,7 @@ interface QualityScoreProps {
 const calculateQualityScore = (data: LfiData): number => {
     let score = 0;
     if (data.template) score += 10;
-    
+
     // Problem Title: Concise but descriptive
     if (data.problemTitle && data.problemTitle.length >= 15 && data.problemTitle.length <= 100) score += 5;
 
@@ -39,27 +39,65 @@ const calculateQualityScore = (data: LfiData): number => {
 
     // Sharing: Complete
     if (data.distribution && data.audience.length > 0) score += 5;
-    
+
     return Math.min(100, score);
 };
-
 
 const QualityScore: React.FC<QualityScoreProps> = ({ lfiData }) => {
     const score = useMemo(() => calculateQualityScore(lfiData), [lfiData]);
 
-    const getGradient = () => {
-        if (score >= 90) return 'linear-gradient(135deg, #43a047 0%, #66bb6a 100%)';
-        if (score >= 60) return 'linear-gradient(135deg, #fb8c00 0%, #ffa726 100%)';
-        return 'linear-gradient(135deg, #e53935 0%, #ef5350 100%)';
+    const getColor = () => {
+        if (score >= 90) return 'var(--success)';
+        if (score >= 60) return 'var(--warning)';
+        return 'var(--danger)';
     };
 
+    const radius = 60;
+    const circumference = 2 * Math.PI * radius;
+    const strokeDashoffset = circumference - (score / 100) * circumference;
+
     return (
-        <div className="mt-8 p-5 rounded-2xl text-white text-center" style={{ background: getGradient() }}>
-            <h3 className="font-bold text-lg">LFI Quality Score</h3>
-            <div className="w-32 h-32 rounded-full bg-white/30 backdrop-blur-sm text-white flex items-center justify-center text-4xl font-bold mx-auto my-4 shadow-inner">
-                {score}%
+        <div className="glass-panel" style={{ textAlign: 'center', padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <h3 style={{ fontWeight: 700, marginBottom: '1rem', color: 'var(--text-primary)' }}>LFI Quality Score</h3>
+
+            <div style={{ position: 'relative', width: '160px', height: '160px', marginBottom: '1rem' }}>
+                <svg width="160" height="160" viewBox="0 0 160 160">
+                    <circle
+                        cx="80"
+                        cy="80"
+                        r={radius}
+                        fill="none"
+                        stroke="rgba(255,255,255,0.1)"
+                        strokeWidth="12"
+                    />
+                    <motion.circle
+                        cx="80"
+                        cy="80"
+                        r={radius}
+                        fill="none"
+                        stroke={getColor()}
+                        strokeWidth="12"
+                        strokeLinecap="round"
+                        strokeDasharray={circumference}
+                        initial={{ strokeDashoffset: circumference }}
+                        animate={{ strokeDashoffset }}
+                        transition={{ duration: 1.5, ease: "easeInOut" }}
+                        style={{ transformOrigin: 'center', transform: 'rotate(-90deg)' }}
+                    />
+                </svg>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <motion.span
+                        style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--text-primary)' }}
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 1 }}
+                    >
+                        {score}%
+                    </motion.span>
+                </div>
             </div>
-            <p className="text-sm opacity-90">Complete all sections for optimal quality</p>
+
+            <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Complete all sections for optimal quality and actionable intelligence.</p>
         </div>
     );
 };

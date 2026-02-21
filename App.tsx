@@ -1,5 +1,5 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { LfiData, SectionKey, TemplateKey } from './types';
 import { SECTIONS } from './constants';
 import Header from './components/Header';
@@ -14,9 +14,11 @@ import ContactPage from './components/ContactPage';
 import CookiePolicy from './components/CookiePolicy';
 import MobileSectionNav from './components/MobileSectionNav';
 import QualityScore from './components/QualityScore';
+import { BookOpen, ShieldCheck, Activity } from 'lucide-react';
 
 const initialLfiData: LfiData = {
     template: null,
+    teamMembers: '',
     problemTitle: '',
     problemStatement: '',
     rcaMethod: '',
@@ -42,6 +44,17 @@ const App: React.FC = () => {
     const [currentSection, setCurrentSection] = useState<SectionKey>('template');
     const [isGuideOpen, setIsGuideOpen] = useState(false);
     const [view, setView] = useState<'tool' | 'contact' | 'cookie'>('tool');
+    const [isDarkMode, setIsDarkMode] = useState(true);
+
+    useEffect(() => {
+        if (isDarkMode) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [isDarkMode]);
+
+    const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
 
     const handleUpdateLfiData = (data: Partial<LfiData>) => {
         setLfiData(prev => ({ ...prev, ...data }));
@@ -69,7 +82,7 @@ const App: React.FC = () => {
             handleSwitchSection(SECTIONS[currentIndex - 1].id);
         }
     };
-    
+
     const renderView = () => {
         switch (view) {
             case 'contact':
@@ -79,51 +92,84 @@ const App: React.FC = () => {
             case 'tool':
             default:
                 return (
-                    <main className="container mx-auto px-4 py-8 lg:py-16">
-                        <section id="tool" className="w-full">
-                            <div className="max-w-none p-0">
-                                <div className="bg-white rounded-2xl p-6 sm:p-10 mb-8 text-center relative overflow-hidden" style={{ boxShadow: 'var(--shadow-lg)' }}>
-                                     <div className="absolute top-0 left-0 right-0 h-1.5" style={{ background: 'var(--gradient-1)' }}></div>
-                                    <h1 className="text-4xl sm:text-5xl font-extrabold gradient-text mb-2.5">🎯 LFI Pro</h1>
-                                    <p className="text-lg sm:text-xl text-gray-600 mb-5">World's Best Lessons For Implementation Assistant</p>
-                                     <button 
-                                        onClick={() => setIsGuideOpen(true)}
-                                        className="mb-5 inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-indigo-600 bg-indigo-100 rounded-full hover:bg-indigo-200 transition-colors"
-                                    >
-                                        <span className="text-lg">📖</span>
-                                        View Best Practices Guide
-                                    </button>
-                                    <p className="text-gray-500 text-base">Transform Your Root Cause Analysis into Actionable Learning Documents</p>
-                                     <div className="flex justify-center gap-4 flex-wrap mt-5">
-                                        <span className="bg-indigo-100 text-indigo-800 text-sm font-semibold px-4 py-1.5 rounded-full">✓ ISO 9001:2015 Compliant</span>
-                                        <span className="bg-indigo-100 text-indigo-800 text-sm font-semibold px-4 py-1.5 rounded-full">✓ APQP Standard</span>
-                                        <span className="bg-indigo-100 text-indigo-800 text-sm font-semibold px-4 py-1.5 rounded-full">✓ Six Sigma Compatible</span>
-                                        <span className="bg-indigo-100 text-indigo-800 text-sm font-semibold px-4 py-1.5 rounded-full">✓ Global Best Practices</span>
-                                    </div>
-                                </div>
+                    <motion.main
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.5 }}
+                        className="container py-12"
+                    >
+                        <section id="tool" className="w-full mb-12">
+                            <div className="glass-panel border dark:border-white/10 border-gray-200 bg-white/50 dark:bg-white/5 backdrop-blur-xl text-center mb-8 relative overflow-hidden">
+                                <motion.div
+                                    className="absolute top-0 left-0 right-0 h-1"
+                                    style={{ background: 'var(--gradient-hero)' }}
+                                    initial={{ scaleX: 0 }}
+                                    animate={{ scaleX: 1 }}
+                                    transition={{ duration: 1, delay: 0.2 }}
+                                />
+                                <motion.h1
+                                    className="gradient-text mb-4"
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6, delay: 0.1 }}
+                                >
+                                    LFI Pro
+                                </motion.h1>
+                                <motion.p
+                                    className="text-gray-600 dark:text-gray-400 mb-6 text-lg"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.6, delay: 0.2 }}
+                                >
+                                    Advanced Industrial Intelligence & Learning From Incidents
+                                </motion.p>
 
-                                <div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-8">
-                                    <aside className="hidden lg:block h-fit sticky top-28">
-                                        <Sidebar
+                                <motion.button
+                                    onClick={() => setIsGuideOpen(true)}
+                                    className="btn btn-secondary border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-800 dark:text-white hover:bg-gray-50 dark:hover:bg-white/10 mb-6"
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    <BookOpen size={20} className="text-primary" />
+                                    <span>Industrial Best Practices Guide</span>
+                                </motion.button>
+
+                                <div className="flex justify-center gap-4 flex-wrap">
+                                    <span className="badge badge-success flex items-center gap-2 bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300"><ShieldCheck size={14} /> ISO 9001:2015</span>
+                                    <span className="badge badge-primary flex items-center gap-2 bg-indigo-100 text-indigo-800 dark:bg-indigo-500/20 dark:text-indigo-300"><Activity size={14} /> APQP & Six Sigma</span>
+                                </div>
+                            </div>
+
+                            <div className="grid lg:grid-cols-[350px_1fr] gap-8">
+                                <aside className="hidden lg:block h-fit sticky top-28">
+                                    <Sidebar
+                                        sections={SECTIONS}
+                                        activeSection={currentSection}
+                                        lfiData={lfiData}
+                                        onSectionClick={handleSwitchSection}
+                                    />
+                                    <div className="mt-8">
+                                        <QualityScore lfiData={lfiData} />
+                                    </div>
+                                </aside>
+
+                                <div>
+                                    <div className="lg:hidden mb-8">
+                                        <MobileSectionNav
                                             sections={SECTIONS}
                                             activeSection={currentSection}
                                             lfiData={lfiData}
                                             onSectionClick={handleSwitchSection}
                                         />
-                                        <QualityScore lfiData={lfiData} />
-                                    </aside>
-                                    
-                                    <div>
-                                        <div className="lg:hidden mb-8">
-                                            <MobileSectionNav
-                                                sections={SECTIONS}
-                                                activeSection={currentSection}
-                                                lfiData={lfiData}
-                                                onSectionClick={handleSwitchSection}
-                                            />
-                                        </div>
-                                        <main className="bg-white rounded-2xl p-6 sm:p-10 min-h-[600px]" style={{ boxShadow: 'var(--shadow)' }}>
+                                    </div>
+                                    <motion.main
+                                        className="glass-panel border dark:border-white/10 border-gray-200 bg-white/80 dark:bg-white/5 backdrop-blur-xl min-h-[600px] relative p-6 md:p-10"
+                                        layout
+                                    >
+                                        <AnimatePresence mode="wait">
                                             <SectionContent
+                                                key={currentSection}
                                                 currentSection={currentSection}
                                                 lfiData={lfiData}
                                                 updateLfiData={handleUpdateLfiData}
@@ -131,31 +177,33 @@ const App: React.FC = () => {
                                                 onNext={handleNextSection}
                                                 onPrev={handlePrevSection}
                                             />
-                                        </main>
-                                         <div className="lg:hidden mt-8">
-                                            <QualityScore lfiData={lfiData} />
-                                        </div>
+                                        </AnimatePresence>
+                                    </motion.main>
+                                    <div className="lg:hidden mt-8">
+                                        <QualityScore lfiData={lfiData} />
                                     </div>
                                 </div>
                             </div>
                         </section>
-                        <div className="space-y-24 mt-24">
+                        <div className="flex flex-col gap-20 mt-20">
                             <FeaturesSection />
                             <IntroductionSection />
                             <FaqSection />
                         </div>
-                    </main>
+                    </motion.main>
                 );
         }
     };
 
     return (
-        <div className="bg-gray-50 text-gray-800 font-sans">
+        <>
             {isGuideOpen && <GuideModal onClose={() => setIsGuideOpen(false)} />}
-            <Header onNavigate={setView} />
-            {renderView()}
+            <Header onNavigate={setView} isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+            <AnimatePresence mode="wait">
+                {renderView()}
+            </AnimatePresence>
             <Footer onNavigate={setView} />
-        </div>
+        </>
     );
 };
 

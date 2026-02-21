@@ -1,9 +1,10 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Section, SectionKey, LfiData } from '../types';
+import { ChevronDown, CheckCircle2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const isSectionFilled = (section: SectionKey, data: LfiData) => {
-    switch(section) {
+    switch (section) {
         case 'template': return !!data.template;
         case 'problem': return !!data.problemTitle && !!data.problemStatement;
         case 'rootcause': return !!data.rootCause;
@@ -43,41 +44,55 @@ const MobileSectionNav: React.FC<MobileSectionNavProps> = ({ sections, activeSec
     };
 
     return (
-        <div className="relative" ref={ref}>
+        <div style={{ position: 'relative' }} ref={ref}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full bg-white rounded-xl p-4 shadow-md text-left flex justify-between items-center border-2 border-transparent focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10"
-                aria-haspopup="true"
-                aria-expanded={isOpen}
+                className="glass-panel"
+                style={{ width: '100%', padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', border: isOpen ? '1px solid var(--primary)' : '1px solid rgba(255,255,255,0.1)' }}
             >
-                <div className="flex items-center gap-4">
-                    <span className="text-2xl">{activeSectionInfo?.icon}</span>
-                    <span className="font-bold text-lg text-gray-800">{activeSectionInfo?.name}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {activeSectionInfo && <activeSectionInfo.icon size={24} strokeWidth={2} />}
+                    </span>
+                    <span style={{ fontWeight: 700, fontSize: '1.125rem', color: 'var(--text-primary)' }}>{activeSectionInfo?.name}</span>
                 </div>
-                <svg className={`w-6 h-6 text-gray-500 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                <motion.div animate={{ rotate: isOpen ? 180 : 0 }}>
+                    <ChevronDown size={24} style={{ color: 'var(--text-secondary)' }} />
+                </motion.div>
             </button>
-            {isOpen && (
-                <ul className="absolute top-full mt-2 w-full bg-white rounded-xl shadow-lg border border-gray-100 z-50 overflow-hidden">
-                    {sections.map(section => {
-                        const isCompleted = isSectionFilled(section.id, lfiData);
-                        return (
-                            <li key={section.id}>
-                                <a
-                                    href="#"
-                                    onClick={(e) => { e.preventDefault(); handleSelect(section.id); }}
-                                    className={`w-full p-4 flex items-center gap-4 hover:bg-gray-100 transition-colors ${activeSection === section.id ? 'bg-indigo-50 text-indigo-700 font-bold' : ''}`}
-                                >
-                                    <span className="text-2xl w-8 text-center">{section.icon}</span>
-                                    <span className="flex-grow">{section.name}</span>
-                                    {isCompleted && (
-                                        <span className="w-6 h-6 bg-green-500 text-white text-xs rounded-full flex items-center justify-center font-bold">✓</span>
-                                    )}
-                                </a>
-                            </li>
-                        );
-                    })}
-                </ul>
-            )}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.ul
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '0.5rem', background: 'var(--bg-surface-elevated)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', zIndex: 50, listStyle: 'none', padding: 0 }}
+                    >
+                        {sections.map(section => {
+                            const isCompleted = isSectionFilled(section.id, lfiData);
+                            const isActive = activeSection === section.id;
+                            return (
+                                <li key={section.id}>
+                                    <button
+                                        onClick={(e) => { e.preventDefault(); handleSelect(section.id); }}
+                                        style={{ width: '100%', padding: '1rem', display: 'flex', alignItems: 'center', gap: '1rem', background: isActive ? 'rgba(79, 70, 229, 0.1)' : 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                                    >
+                                        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '2rem' }}>
+                                            <section.icon size={22} strokeWidth={2} />
+                                        </span>
+                                        <span style={{ flexGrow: 1, color: isActive ? 'var(--primary)' : 'var(--text-secondary)', fontWeight: isActive ? 700 : 500 }}>{section.name}</span>
+                                        {isCompleted && (
+                                            <span style={{ color: 'var(--success)' }}>
+                                                <CheckCircle2 size={20} />
+                                            </span>
+                                        )}
+                                    </button>
+                                </li>
+                            );
+                        })}
+                    </motion.ul>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

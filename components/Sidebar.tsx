@@ -1,6 +1,7 @@
-
 import React from 'react';
 import { Section, SectionKey, LfiData } from '../types';
+import { motion } from 'framer-motion';
+import { CheckCircle2 } from 'lucide-react';
 
 interface SidebarProps {
     sections: Section[];
@@ -10,7 +11,7 @@ interface SidebarProps {
 }
 
 const isSectionFilled = (section: SectionKey, data: LfiData) => {
-    switch(section) {
+    switch (section) {
         case 'template': return !!data.template;
         case 'problem': return !!data.problemTitle && !!data.problemStatement;
         case 'rootcause': return !!data.rootCause;
@@ -24,28 +25,55 @@ const isSectionFilled = (section: SectionKey, data: LfiData) => {
 
 const Sidebar: React.FC<SidebarProps> = ({ sections, activeSection, lfiData, onSectionClick }) => {
     return (
-        <div className="bg-white rounded-2xl p-8 shadow-md">
-            <h3 className="text-xl font-bold mb-5" style={{ color: 'var(--primary)' }}>LFI Sections</h3>
-            <ul className="space-y-2.5">
-                {sections.map(section => {
+        <div className="glass-panel" style={{ padding: '2rem' }}>
+            <h3 style={{ color: 'var(--text-primary)', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem', marginBottom: '1.5rem' }}>
+                LFI Builder
+            </h3>
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {sections.map((section, index) => {
                     const isCompleted = isSectionFilled(section.id, lfiData);
+                    const isActive = activeSection === section.id;
+
                     return (
-                        <li
+                        <motion.li
                             key={section.id}
-                            className={`p-4 rounded-xl cursor-pointer transition-all duration-300 flex items-center gap-4 relative border-l-4 ${
-                                activeSection === section.id
-                                    ? 'text-white shadow-lg'
-                                    : 'hover:bg-gray-100 hover:translate-x-1 border-l-transparent hover:border-l-[var(--secondary)]'
-                            } ${isCompleted && activeSection !== section.id ? 'bg-green-50' : ''}`}
-                            style={activeSection === section.id ? {background: 'var(--gradient-1)', borderLeftColor: 'transparent'} : {}}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.1 }}
                             onClick={() => onSectionClick(section.id)}
+                            style={{
+                                padding: '1rem',
+                                borderRadius: 'var(--radius-md)',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '1rem',
+                                position: 'relative',
+                                background: isActive ? 'rgba(79, 70, 229, 0.2)' : 'transparent',
+                                border: isActive ? '1px solid rgba(79, 70, 229, 0.5)' : '1px solid transparent',
+                                transition: 'all 0.3s ease',
+                                color: isActive ? 'white' : 'var(--text-secondary)'
+                            }}
+                            whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.05)' }}
+                            whileTap={{ scale: 0.98 }}
                         >
-                            <span className="text-2xl w-8 text-center">{section.icon}</span>
-                            <span className="font-semibold">{section.name.substring(3)}</span>
+                            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '2rem' }}>
+                                <section.icon size={22} strokeWidth={2} />
+                            </span>
+                            <span style={{ fontWeight: isActive ? 600 : 400 }}>
+                                {section.name.substring(3)}
+                            </span>
+
                             {isCompleted && (
-                                <span className="absolute right-4 w-6 h-6 bg-green-500 text-white text-xs rounded-full flex items-center justify-center font-bold">✓</span>
+                                <motion.div
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    style={{ position: 'absolute', right: '1rem', color: 'var(--secondary)' }}
+                                >
+                                    <CheckCircle2 size={20} />
+                                </motion.div>
                             )}
-                        </li>
+                        </motion.li>
                     )
                 })}
             </ul>
