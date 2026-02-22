@@ -1,7 +1,7 @@
 import React from 'react';
 import { Section, SectionKey, LfiData } from '../types';
-import { motion } from 'framer-motion';
-import { CheckCircle2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CheckCircle2, AlertTriangle } from 'lucide-react';
 
 interface SidebarProps {
     sections: Section[];
@@ -10,16 +10,48 @@ interface SidebarProps {
     onSectionClick: (section: SectionKey) => void;
 }
 
-const isSectionFilled = (section: SectionKey, data: LfiData) => {
+export type SectionStatus = 'empty' | 'warning' | 'completed';
+
+export const getSectionStatus = (section: SectionKey, data: LfiData): SectionStatus => {
     switch (section) {
-        case 'template': return !!data.template;
-        case 'problem': return !!data.problemTitle && !!data.problemStatement;
-        case 'rootcause': return !!data.rootCause;
-        case 'lessons': return data.lessons.some(l => l && l.length > 0);
-        case 'actions': return !!data.immediateAction && !!data.correctiveAction && !!data.systemicAction;
-        case 'prevention': return !!data.validation && !!data.horizontal;
-        case 'sharing': return !!data.distribution || data.audience.length > 0;
-        default: return false;
+        case 'template':
+            return data.template ? 'completed' : 'empty';
+        case 'problem': {
+            if (!data.problemTitle && !data.problemStatement) return 'empty';
+            const statementWords = data.problemStatement.trim().split(/\s+/).filter(Boolean).length;
+            if (data.problemTitle.length < 15 || statementWords < 25) return 'warning';
+            return 'completed';
+        }
+        case 'rootcause': {
+            if (!data.rootCause) return 'empty';
+            const rcWords = data.rootCause.trim().split(/\s+/).filter(Boolean).length;
+            if (rcWords < 20) return 'warning';
+            return 'completed';
+        }
+        case 'lessons': {
+            const hasLessons = data.lessons.some(l => l && l.trim().length > 0);
+            if (!hasLessons) return 'empty';
+            const lesson1Words = data.lessons[0] ? data.lessons[0].trim().split(/\s+/).filter(Boolean).length : 0;
+            if (lesson1Words < 15) return 'warning';
+            return 'completed';
+        }
+        case 'actions': {
+            if (!data.immediateAction && !data.correctiveAction && !data.systemicAction) return 'empty';
+            if (!data.immediateAction || !data.correctiveAction || !data.systemicAction ||
+                data.immediateAction.length < 10 || data.correctiveAction.length < 10 || data.systemicAction.length < 10) return 'warning';
+            return 'completed';
+        }
+        case 'prevention': {
+            if (!data.validation && !data.horizontal) return 'empty';
+            if (!data.validation || !data.horizontal || data.validation.length < 10 || data.horizontal.length < 10) return 'warning';
+            return 'completed';
+        }
+        case 'sharing': {
+            if (!data.distribution && data.audience.length === 0) return 'empty';
+            if (!data.distribution || data.audience.length === 0 || data.distribution.length < 5) return 'warning';
+            return 'completed';
+        }
+        default: return 'empty';
     }
 }
 
@@ -31,7 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sections, activeSection, lfiData, onS
             </h3>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 {sections.map((section, index) => {
-                    const isCompleted = isSectionFilled(section.id, lfiData);
+                    const status = getSectionStatus(section.id, lfiData);
                     const isActive = activeSection === section.id;
 
                     return (
@@ -64,15 +96,32 @@ const Sidebar: React.FC<SidebarProps> = ({ sections, activeSection, lfiData, onS
                                 {section.name.substring(3)}
                             </span>
 
-                            {isCompleted && (
-                                <motion.div
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    style={{ position: 'absolute', right: '1rem', color: 'var(--secondary)' }}
-                                >
-                                    <CheckCircle2 size={20} />
-                                </motion.div>
-                            )}
+                            <AnimatePresence mode="wait">
+                                {status === 'completed' && (
+                                    <motion.div
+                                        key="completed"
+                                        initial={{ scale: 0, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        exit={{ scale: 0, opacity: 0 }}
+                                        style={{ position: 'absolute', right: '1rem', color: 'var(--success)' }}
+                                        title="Section deeply completed"
+                                    >
+                                        <CheckCircle2 size={20} />
+                                    </motion.div>
+                                )}
+                                {status === 'warning' && (
+                                    <motion.div
+                                        key="warning"
+                                        initial={{ scale: 0, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        exit={{ scale: 0, opacity: 0 }}
+                                        style={{ position: 'absolute', right: '1rem', color: 'var(--warning)' }}
+                                        title="Needs more detail for a 100/100 score"
+                                    >
+                                        <AlertTriangle size={20} />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </motion.li>
                     )
                 })}

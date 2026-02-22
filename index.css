@@ -9,6 +9,12 @@
     padding: 0;
 }
 
+/* --- GLOBAL TEXT JUSTIFICATION --- */
+p,
+.leading-relaxed {
+    text-align: justify;
+}
+
 :root {
     /* Main Color Palette - Professional & Viral */
     --primary: #4F46E5;
@@ -397,4 +403,69 @@ h3 {
 ::selection {
     background: var(--primary);
     color: white;
+}
+
+/* --- PRINT STYLES --- */
+@media print {
+    :root {
+        --bg-main: #fff;
+        --bg-surface: #fff;
+        --text-primary: #000;
+        --text-secondary: #333;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background: none;
+        background-color: white !important;
+        color: black !important;
+        background-image: none !important;
+        font-size: 11pt;
+        /* Better for reading on A4 */
+    }
+
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    @page {
+        size: A4 portrait;
+        margin: 15mm;
+    }
+
+    .glass-panel,
+    .glass-card {
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        background: white !important;
+    }
+
+    .print-section {
+        page-break-inside: avoid;
+        break-inside: avoid;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .print-break-before {
+        page-break-before: always;
+        break-before: page;
+    }
+
+    /* Ensure matrix colors don't get stripped */
+    table td,
+    table th {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Hide background elements causing issues */
+    #root {
+        background: none !important;
+    }
 }

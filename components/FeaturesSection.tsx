@@ -1,68 +1,81 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Waypoints, Lightbulb, ShieldCheck } from 'lucide-react';
+import { FileText, Shield, Moon, CheckSquare, Presentation, Download } from 'lucide-react';
 
 const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; description: string; index: number }> = ({ icon, title, description, index }) => (
     <motion.div
-        className="glass-card"
+        className="bg-slate-800/50 backdrop-blur-md border border-slate-700 flex flex-col items-center text-center p-8 rounded-2xl hover:bg-slate-800 transition-colors relative z-10 shadow-xl"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6, delay: index * 0.2 }}
-        whileHover={{ y: -10 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
     >
-        <div style={{ width: '4rem', height: '4rem', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: 'rgba(79, 70, 229, 0.2)', color: 'var(--primary)', marginBottom: '1.5rem', marginInline: 'auto' }}>
+        <div className="w-16 h-16 rounded-full flex items-center justify-center bg-indigo-500/20 text-indigo-400 mb-6 shadow-sm">
             {icon}
         </div>
-        <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>{title}</h3>
-        <p style={{ color: 'var(--text-secondary)' }}>{description}</p>
+        <h3 className="text-xl font-bold mb-4 text-white">{title}</h3>
+        <p className="text-slate-300 leading-relaxed">{description}</p>
     </motion.div>
 );
 
 const FeaturesSection: React.FC = () => {
     return (
-        <section id="features" className="text-center">
-            <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-            >
-                <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem' }} className="gradient-text">Guided, Intelligent & Compliant</h2>
-                <p style={{ fontSize: '1.125rem', color: 'var(--text-secondary)', maxWidth: '48rem', margin: '0 auto 3rem auto' }}>
-                    Our tool doesn't just give you a blank page. It provides a world-class framework to ensure every LFI is comprehensive, actionable, and ready for global implementation.
-                </p>
-            </motion.div>
+        <section id="features" className="py-20 bg-slate-900 border-y border-slate-800 text-white relative">
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-50"></div>
 
-            <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 30 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, ease: 'easeOut' }}
-                className="max-w-4xl mx-auto mb-20 relative px-4"
-            >
-                <div className="absolute inset-0 bg-indigo-500/10 dark:bg-indigo-500/20 blur-3xl rounded-full translate-y-10"></div>
-                <img src="/hero-network.png" alt="Intelligence Network Architecture" className="w-full h-auto rounded-3xl shadow-2xl relative z-10 border border-white/10 dark:border-gray-800" />
-            </motion.div>
+            <div className="text-center md:text-left mb-16 relative z-10 max-w-6xl mx-auto md:mx-0 px-6">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-white">
+                        Built-In Tools for <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Every Team</span>
+                    </h2>
+                    <p className="text-slate-300 max-w-5xl mx-auto md:mx-0 relative z-10 text-xl md:text-2xl mt-6 leading-relaxed">
+                        Everything your team needs to capture, analyze, and share incident learnings — running securely in your browser with no server or subscription required.
+                    </p>
+                </motion.div>
+            </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                 <FeatureCard
                     index={0}
-                    icon={<Waypoints size={32} />}
-                    title="Step-by-Step Guidance"
-                    description="Navigate the LFI process with a clear, structured workflow, from problem statement to global knowledge sharing."
+                    icon={<FileText size={32} />}
+                    title="1-Click Print & PDF"
+                    description="Instantly generate flawlessly formatted A4 documents using native browser print capabilities. No watermarks, just professional results."
                 />
                 <FeatureCard
                     index={1}
-                    icon={<Lightbulb size={32} />}
-                    title="Real-Time Quality Score"
-                    description="Instantly assess the quality and completeness of your document with our intelligent scoring system."
+                    icon={<Download size={32} />}
+                    title="Docx Export"
+                    description="Need to make last-minute edits offline? Export your completed LFI directly to Microsoft Word with preserved formatting."
                 />
                 <FeatureCard
                     index={2}
-                    icon={<ShieldCheck size={32} />}
-                    title="Industry Standard Templates"
-                    description="Choose from ISO 9001, APQP/8D, Six Sigma, and A3 templates to ensure full compliance with your QMS."
+                    icon={<CheckSquare size={32} />}
+                    title="Real-Time Quality Score"
+                    description="Our structured scoring system evaluates your inputs as you type, helping guide your team toward complete, well-structured reports before you ever hit print."
+                />
+                <FeatureCard
+                    index={3}
+                    icon={<Shield size={32} />}
+                    title="100% Secure & Local"
+                    description="Your sensitive industrial data never leaves your computer. The entire application runs client-side in your browser for ultimate security."
+                />
+                <FeatureCard
+                    index={4}
+                    icon={<Presentation size={32} />}
+                    title="Markdown Support"
+                    description="Write richly formatted documentation effortlessly. Use bolding, bullet points, headers, and code blocks natively in the text areas."
+                />
+                <FeatureCard
+                    index={5}
+                    icon={<Moon size={32} />}
+                    title="Dark & Light Mode"
+                    description="Whether you are on the heavily-lit factory floor or analyzing data late at night, perfectly calibrated themes adapt to your environment."
                 />
             </div>
         </section>

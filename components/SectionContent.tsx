@@ -18,6 +18,7 @@ interface SectionContentProps {
     onTemplateSelect: (template: TemplateKey) => void;
     onNext: () => void;
     onPrev: () => void;
+    onSwitchSection: (section: SectionKey) => void;
 }
 
 const SectionHeader: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -41,7 +42,7 @@ const pageTransition = {
 };
 
 const SectionContent: React.FC<SectionContentProps> = (props) => {
-    const { currentSection, lfiData, updateLfiData, onTemplateSelect, onNext, onPrev } = props;
+    const { currentSection, lfiData, updateLfiData, onTemplateSelect, onNext, onPrev, onSwitchSection } = props;
     const currentSectionInfo = SECTIONS.find(s => s.id === currentSection);
 
     const renderSection = () => {
@@ -63,7 +64,7 @@ const SectionContent: React.FC<SectionContentProps> = (props) => {
             case 'sharing':
                 return <KnowledgeSharing {...sectionProps} />;
             case 'preview':
-                return <ReviewExport lfiData={lfiData} onPrev={onPrev} />;
+                return <ReviewExport lfiData={lfiData} onPrev={onPrev} onSwitchSection={onSwitchSection} />;
             default:
                 return <div>Section not found</div>;
         }

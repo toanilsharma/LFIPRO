@@ -21,11 +21,11 @@ const SampleLfiModal: React.FC<SampleLfiModalProps> = ({ templateId, onClose }) 
             onClick={onClose}
         >
             <div
-                className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col"
+                className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-100"
                 onClick={e => e.stopPropagation()}
             >
-                <header className="p-6 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white rounded-t-2xl">
-                    <h2 className="text-2xl font-bold flex items-center gap-4" style={{ color: 'var(--primary)' }}>
+                <header className="p-6 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center sticky top-0 bg-white dark:bg-gray-900 rounded-t-2xl z-10">
+                    <h2 className="text-2xl font-bold flex items-center gap-4 text-primary dark:text-indigo-400">
                         <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <templateInfo.icon size={36} strokeWidth={2} />
                         </span>
@@ -40,10 +40,10 @@ const SampleLfiModal: React.FC<SampleLfiModalProps> = ({ templateId, onClose }) 
                 <main className="p-8 overflow-y-auto">
                     <LfiPreviewContent lfiData={sampleData} />
                 </main>
-                <footer className="p-4 bg-gray-50 border-t border-gray-200 text-right sticky bottom-0 rounded-b-2xl">
+                <footer className="p-4 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 text-right sticky bottom-0 rounded-b-2xl z-10">
                     <button
                         onClick={onClose}
-                        className="px-6 py-2 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300"
+                        className="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
                     >
                         Close
                     </button>

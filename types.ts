@@ -34,6 +34,7 @@ export interface LfiData {
     audience: string[];
     distribution: string;
     tags: string;
+    images: string[];
     riskAssessment?: {
         beforeSeverity: number;
         beforeLikelihood: number;

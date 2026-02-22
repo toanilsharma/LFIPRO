@@ -2,6 +2,7 @@ import React from 'react';
 import { LfiData } from '../../types';
 import SectionControls from '../ui/SectionControls';
 import FiveWhysGraph from '../FiveWhysGraph';
+import MarkdownTextarea from '../ui/MarkdownTextarea';
 
 interface RootCauseProps {
     lfiData: LfiData;
@@ -57,12 +58,13 @@ const RootCause: React.FC<RootCauseProps> = ({ lfiData, updateLfiData, onNext, o
             <div className="mb-8 p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-rose-300 dark:hover:border-rose-600 transition-colors">
                 <label htmlFor="rootCause" className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3 block">The True Root Cause <span className="text-rose-500" title="Required">*</span></label>
                 <p className="text-gray-500 dark:text-gray-400 mb-4 text-sm font-medium">Describe the fundamental reason WHY the problem occurred. Focus on the process failing, not the person failing. (This is synced with your 5-Whys graph).</p>
-                <textarea
+                <MarkdownTextarea
                     id="rootCause"
+                    minRows={6}
                     value={lfiData.rootCause}
                     onChange={e => updateLfiData({ rootCause: e.target.value })}
                     placeholder="E.g., The system allowed X to happen because Y was missing..."
-                    className="w-full min-h-[200px] p-4 border-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl text-lg resize-vertical transition-all duration-300 focus:outline-none focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20"
+                    invalid={lfiData.rootCause.trim().length === 0}
                 />
             </div>
 

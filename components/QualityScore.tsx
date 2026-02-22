@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { LfiData } from '../types';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Trophy, Sparkles } from 'lucide-react';
 
 interface QualityScoreProps {
     lfiData: LfiData;
@@ -44,12 +45,22 @@ const calculateQualityScore = (data: LfiData): number => {
 };
 
 const QualityScore: React.FC<QualityScoreProps> = ({ lfiData }) => {
-    const score = useMemo(() => calculateQualityScore(lfiData), [lfiData]);
+    const [debouncedData, setDebouncedData] = useState(lfiData);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedData(lfiData);
+        }, 300);
+        return () => clearTimeout(handler);
+    }, [lfiData]);
+
+    const score = useMemo(() => calculateQualityScore(debouncedData), [debouncedData]);
 
     const getColor = () => {
-        if (score >= 90) return 'var(--success)';
-        if (score >= 60) return 'var(--warning)';
-        return 'var(--danger)';
+        if (score === 100) return '#eab308'; // yellow-500 (gold)
+        if (score >= 90) return '#10b981'; // emerald-500
+        if (score >= 60) return '#f59e0b'; // amber-500
+        return '#f43f5e'; // rose-500
     };
 
     const radius = 60;
@@ -57,19 +68,41 @@ const QualityScore: React.FC<QualityScoreProps> = ({ lfiData }) => {
     const strokeDashoffset = circumference - (score / 100) * circumference;
 
     return (
-        <div className="glass-panel" style={{ textAlign: 'center', padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <h3 style={{ fontWeight: 700, marginBottom: '1rem', color: 'var(--text-primary)' }}>LFI Quality Score</h3>
+        <motion.div
+            className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm flex flex-col items-center relative overflow-hidden"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+        >
+            {/* Celebration Background for 100% */}
+            <AnimatePresence>
+                {score === 100 && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 bg-yellow-50 dark:bg-yellow-900/20"
+                    />
+                )}
+            </AnimatePresence>
 
-            <div style={{ position: 'relative', width: '160px', height: '160px', marginBottom: '1rem' }}>
-                <svg width="160" height="160" viewBox="0 0 160 160">
+            <h3 className="font-bold text-gray-800 dark:text-gray-200 mb-6 flex items-center gap-2 z-10">
+                {score === 100 ? <Trophy className="text-yellow-500" size={20} /> : <Sparkles className="text-primary" size={20} />}
+                Document Quality
+            </h3>
+
+            <div className="relative w-40 h-40 mb-4 z-10">
+                <svg width="160" height="160" viewBox="0 0 160 160" className="transform -rotate-90">
+                    {/* Background Track */}
                     <circle
                         cx="80"
                         cy="80"
                         r={radius}
                         fill="none"
-                        stroke="rgba(255,255,255,0.1)"
+                        className="stroke-gray-100 dark:stroke-gray-700"
                         strokeWidth="12"
                     />
+                    {/* Progress Arc */}
                     <motion.circle
                         cx="80"
                         cy="80"
@@ -81,24 +114,51 @@ const QualityScore: React.FC<QualityScoreProps> = ({ lfiData }) => {
                         strokeDasharray={circumference}
                         initial={{ strokeDashoffset: circumference }}
                         animate={{ strokeDashoffset }}
-                        transition={{ duration: 1.5, ease: "easeInOut" }}
-                        style={{ transformOrigin: 'center', transform: 'rotate(-90deg)' }}
+                        transition={{ duration: 1, type: "spring", bounce: 0.4 }}
                     />
                 </svg>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+
+                {/* Center Text */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <motion.span
-                        style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--text-primary)' }}
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 1 }}
+                        key={score} // Forces re-animation on score change
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className={`text-4xl font-extrabold ${score === 100 ? 'text-yellow-500' : 'text-gray-900 dark:text-white'}`}
                     >
                         {score}%
                     </motion.span>
                 </div>
+
+                {/* 100% Particle Burst Effect */}
+                <AnimatePresence>
+                    {score === 100 && (
+                        <>
+                            {[...Array(6)].map((_, i) => (
+                                <motion.div
+                                    key={`particle-${i}`}
+                                    className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-yellow-400"
+                                    initial={{ x: "-50%", y: "-50%", scale: 1, opacity: 1 }}
+                                    animate={{
+                                        x: `calc(-50% + ${Math.cos((i * 60) * (Math.PI / 180)) * 70}px)`,
+                                        y: `calc(-50% + ${Math.sin((i * 60) * (Math.PI / 180)) * 70}px)`,
+                                        scale: 0,
+                                        opacity: 0,
+                                    }}
+                                    transition={{ duration: 0.8, ease: "easeOut" }}
+                                />
+                            ))}
+                        </>
+                    )}
+                </AnimatePresence>
             </div>
 
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Complete all sections for optimal quality and actionable intelligence.</p>
-        </div>
+            <p className="text-sm text-center text-gray-500 dark:text-gray-400 z-10">
+                {score === 100
+                    ? "Perfect! Ready for executive review."
+                    : "Add detail and actions to increase score."}
+            </p>
+        </motion.div>
     );
 };
 

@@ -1,20 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Section, SectionKey, LfiData } from '../types';
-import { ChevronDown, CheckCircle2 } from 'lucide-react';
+import { ChevronDown, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const isSectionFilled = (section: SectionKey, data: LfiData) => {
-    switch (section) {
-        case 'template': return !!data.template;
-        case 'problem': return !!data.problemTitle && !!data.problemStatement;
-        case 'rootcause': return !!data.rootCause;
-        case 'lessons': return data.lessons.some(l => l && l.length > 0);
-        case 'actions': return !!data.immediateAction && !!data.correctiveAction && !!data.systemicAction;
-        case 'prevention': return !!data.validation && !!data.horizontal;
-        case 'sharing': return !!data.distribution || data.audience.length > 0;
-        default: return false;
-    }
-}
+import { getSectionStatus } from './Sidebar';
 
 interface MobileSectionNavProps {
     sections: Section[];
@@ -69,7 +57,7 @@ const MobileSectionNav: React.FC<MobileSectionNavProps> = ({ sections, activeSec
                         style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '0.5rem', background: 'var(--bg-surface-elevated)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', zIndex: 50, listStyle: 'none', padding: 0 }}
                     >
                         {sections.map(section => {
-                            const isCompleted = isSectionFilled(section.id, lfiData);
+                            const status = getSectionStatus(section.id, lfiData);
                             const isActive = activeSection === section.id;
                             return (
                                 <li key={section.id}>
@@ -81,9 +69,14 @@ const MobileSectionNav: React.FC<MobileSectionNavProps> = ({ sections, activeSec
                                             <section.icon size={22} strokeWidth={2} />
                                         </span>
                                         <span style={{ flexGrow: 1, color: isActive ? 'var(--primary)' : 'var(--text-secondary)', fontWeight: isActive ? 700 : 500 }}>{section.name}</span>
-                                        {isCompleted && (
+                                        {status === 'completed' && (
                                             <span style={{ color: 'var(--success)' }}>
                                                 <CheckCircle2 size={20} />
+                                            </span>
+                                        )}
+                                        {status === 'warning' && (
+                                            <span style={{ color: 'var(--warning)' }}>
+                                                <AlertTriangle size={20} />
                                             </span>
                                         )}
                                     </button>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { LfiData } from '../../types';
 import SectionControls from '../ui/SectionControls';
+import MarkdownTextarea from '../ui/MarkdownTextarea';
 
 interface LessonsLearnedProps {
     lfiData: LfiData;
@@ -10,6 +11,37 @@ interface LessonsLearnedProps {
 }
 
 const LessonsLearned: React.FC<LessonsLearnedProps> = ({ lfiData, updateLfiData, onNext, onPrev }) => {
+
+    const getSmartLessonExample = (template: string | null) => {
+        switch (template) {
+            case 'iso9001':
+                return {
+                    rootCause: '"Process SOP lacked a verification step..."',
+                    lesson: '"Critical manual process steps require mandatory, independent verification (ISO 9001:2015 Clause 8.5.1)."'
+                };
+            case 'apqp':
+                return {
+                    rootCause: '"DFMEA did not anticipate thermal expansion at junction X..."',
+                    lesson: '"Thermal expansion parameters must be explicitly modeled in Phase 2 of the APQP process for all future high-heat assemblies."'
+                };
+            case 'sixsigma':
+                return {
+                    rootCause: '"Tool wear rate caused dimension Z to drift out of upper control limit..."',
+                    lesson: '"Statistical Process Control (SPC) charting frequency must be inversely proportional to the historical tool wear rate."'
+                };
+            case 'a3':
+                return {
+                    rootCause: '"Operators lacked visual indicators for torque limits..."',
+                    lesson: '"Visual Management (Andon/Poka-Yoke) is required for all torque-sensitive assembly stations to prevent over-tightening."'
+                };
+            default:
+                return {
+                    rootCause: '"Process SOP lacked a verification step..."',
+                    lesson: '"Critical manual process steps require mandatory, independent verification to mitigate human error."'
+                };
+        }
+    };
+    const smartExample = getSmartLessonExample(lfiData.template);
 
     const handleLessonChange = (index: number, value: string) => {
         const newLessons = [...lfiData.lessons] as [string, string, string];
@@ -36,11 +68,11 @@ const LessonsLearned: React.FC<LessonsLearnedProps> = ({ lfiData, updateLfiData,
                 <div className="text-gray-800 dark:text-gray-200 space-y-4 text-base bg-white/50 dark:bg-black/20 p-5 rounded-xl">
                     <p className="flex items-start gap-3">
                         <strong className="text-rose-600 dark:text-rose-400 font-bold whitespace-nowrap pt-1">The Root Cause:</strong>
-                        <span className="italic">"Process SOP lacked a verification step..."</span>
+                        <span className="italic">{smartExample.rootCause}</span>
                     </p>
                     <p className="flex items-start gap-3">
                         <strong className="text-emerald-600 dark:text-emerald-400 font-bold whitespace-nowrap pt-1">The Lesson:</strong>
-                        <span className="italic font-bold">"Critical manual process steps require mandatory, independent verification to mitigate human error."</span>
+                        <span className="italic font-bold">{smartExample.lesson}</span>
                     </p>
                 </div>
             </div>
@@ -57,12 +89,12 @@ const LessonsLearned: React.FC<LessonsLearnedProps> = ({ lfiData, updateLfiData,
                                 ? "What is a secondary insight or observation?"
                                 : "Any additional best practices learned?"}
                     </p>
-                    <textarea
+                    <MarkdownTextarea
                         id={`lesson${index + 1}`}
+                        minRows={4}
                         value={lfiData.lessons[index]}
                         onChange={e => handleLessonChange(index, e.target.value)}
                         placeholder="Type your lesson here..."
-                        className="w-full min-h-[140px] p-4 border-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl text-lg resize-vertical transition-all duration-300 focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/20"
                     />
                 </div>
             ))}
