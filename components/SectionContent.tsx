@@ -22,8 +22,8 @@ interface SectionContentProps {
 }
 
 const SectionHeader: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', paddingBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-        <h2 style={{ fontSize: '1.875rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '1rem', color: 'var(--text-primary)', margin: 0 }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--text-primary)', margin: 0 }}>
             {children}
         </h2>
     </div>
@@ -80,8 +80,8 @@ const SectionContent: React.FC<SectionContentProps> = (props) => {
             style={{ width: '100%' }}
         >
             <SectionHeader>
-                <span style={{ fontSize: '1.875rem', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '3rem', height: '3rem', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-sm)' }}>
-                    {currentSectionInfo && <currentSectionInfo.icon size={30} strokeWidth={2} />}
+                <span style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '2.25rem', height: '2.25rem', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-sm)' }}>
+                    {currentSectionInfo && <currentSectionInfo.icon size={22} strokeWidth={2} />}
                 </span>
                 {currentSectionInfo?.name.substring(3)}
             </SectionHeader>

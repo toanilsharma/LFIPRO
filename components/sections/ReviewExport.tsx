@@ -153,25 +153,25 @@ ${lfiData.distribution}
 
     return (
         <div className="animate-fade-in text-gray-900 dark:text-gray-100 max-w-5xl mx-auto">
-            <div className="mb-10 text-center print:hidden">
-                <span className="inline-block px-4 py-1.5 mb-4 text-sm font-bold tracking-wider text-purple-700 uppercase bg-purple-100 dark:bg-purple-900/50 dark:text-purple-300 rounded-full">
+            <div className="mb-6 text-center print:hidden">
+                <span className="inline-block px-3 py-1 mb-2 text-xs font-bold tracking-wider text-purple-700 uppercase bg-purple-100 dark:bg-purple-900/50 dark:text-purple-300 rounded-full">
                     Final Step
                 </span>
-                <h2 className="text-3xl md:text-4xl font-extrabold mb-4 font-heading">Review & Export</h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400">
+                <h2 className="text-xl md:text-2xl font-extrabold mb-2 font-heading">Review & Export</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                     Your world-class Learning From Incident report is ready to be shared.
                 </p>
             </div>
 
             {missingFields.length === 0 ? (
-                <div className="bg-emerald-50 dark:bg-emerald-900/30 border-l-4 border-emerald-500 text-emerald-800 dark:text-emerald-200 p-6 rounded-r-2xl mb-8 flex items-center gap-4 shadow-sm print:hidden">
-                    <span className="text-3xl bg-white dark:bg-emerald-900/50 rounded-full p-2">🎉</span>
-                    <p className="text-lg"><strong>Congratulations!</strong> Your LFI document is 100% complete and ready for export.</p>
+                <div className="bg-emerald-50 dark:bg-emerald-900/30 border-l-4 border-emerald-500 text-emerald-800 dark:text-emerald-200 p-5 rounded-r-2xl mb-8 flex items-center gap-4 shadow-sm print:hidden">
+                    <span className="text-2xl bg-white dark:bg-emerald-900/50 rounded-full p-2">🎉</span>
+                    <p className="text-base"><strong>Congratulations!</strong> Your LFI document is 100% complete and ready for export.</p>
                 </div>
             ) : (
-                <div className="bg-amber-50 dark:bg-amber-900/30 border-l-4 border-amber-500 text-amber-800 dark:text-amber-200 p-6 rounded-r-2xl mb-8 shadow-sm print:hidden">
-                    <p className="text-lg flex items-center gap-3 mb-2 font-bold"><span className="text-2xl">⚠️</span> Missing required sections:</p>
-                    <ul className="list-none mt-4 text-base ml-2 font-medium space-y-2 flex flex-col items-start">
+                <div className="bg-amber-50 dark:bg-amber-900/30 border-l-4 border-amber-500 text-amber-800 dark:text-amber-200 p-5 rounded-r-2xl mb-8 shadow-sm print:hidden">
+                    <p className="text-base flex items-center gap-3 mb-2 font-bold"><span className="text-xl">⚠️</span> Missing required sections:</p>
+                    <ul className="list-none mt-3 text-sm ml-2 font-medium space-y-2 flex flex-col items-start">
                         {missingFields.map(field => (
                             <li key={field.key}>
                                 <button
@@ -186,12 +186,12 @@ ${lfiData.distribution}
                 </div>
             )}
 
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl mb-10 border border-gray-200 dark:border-gray-700 shadow-sm print:hidden">
-                <div className="flex justify-between items-end mb-4">
-                    <h3 className="font-extrabold text-xl text-gray-900 dark:text-white">Document Completeness</h3>
-                    <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{completionPercentage}%</span>
+            <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl mb-6 border border-gray-200 dark:border-gray-700 shadow-sm print:hidden">
+                <div className="flex justify-between items-end mb-2">
+                    <h3 className="font-extrabold text-base text-gray-900 dark:text-white">Document Completeness</h3>
+                    <span className="text-lg font-black text-indigo-600 dark:text-indigo-400">{completionPercentage}%</span>
                 </div>
-                <div className="bg-gray-100 dark:bg-gray-900 h-4 rounded-full overflow-hidden shadow-inner">
+                <div className="bg-gray-100 dark:bg-gray-900 h-2 rounded-full overflow-hidden shadow-inner">
                     <div className="h-full rounded-full transition-all duration-1000 ease-out bg-indigo-500 dark:bg-indigo-400" style={{ width: `${completionPercentage}%` }}></div>
                 </div>
             </div>
@@ -213,31 +213,31 @@ ${lfiData.distribution}
             <div className="flex gap-4 mt-8 flex-wrap justify-center border-t border-gray-200 dark:border-gray-700 pt-8 print:hidden">
                 <button
                     onClick={onPrev}
-                    className="px-6 py-4 rounded-xl font-bold bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all border border-gray-300 dark:border-gray-600"
+                    className="px-5 py-3 rounded-xl font-bold bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all border border-gray-300 dark:border-gray-600"
                 >
                     ← Go Back
                 </button>
                 <button
                     onClick={window.print}
-                    className="px-8 py-4 rounded-xl font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/30 transition-all hover:-translate-y-1 flex items-center gap-2"
+                    className="px-6 py-3 rounded-xl font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/30 transition-all hover:-translate-y-1 flex items-center gap-2"
                 >
                     📄 Export as PDF
                 </button>
                 <button
                     onClick={exportWord}
-                    className="px-8 py-4 rounded-xl font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/30 transition-all hover:-translate-y-1 flex items-center gap-2"
+                    className="px-6 py-3 rounded-xl font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/30 transition-all hover:-translate-y-1 flex items-center gap-2"
                 >
                     📝 Export as Word
                 </button>
                 <button
                     onClick={copyLFI}
-                    className="px-8 py-4 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-600/30 transition-all hover:-translate-y-1 flex items-center gap-2"
+                    className="px-6 py-3 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-600/30 transition-all hover:-translate-y-1 flex items-center gap-2"
                 >
                     📋 Copy Text
                 </button>
                 <button
                     onClick={exportJSON}
-                    className="px-8 py-4 rounded-xl font-bold bg-amber-500 hover:bg-amber-600 text-white shadow-lg shadow-amber-500/30 transition-all hover:-translate-y-1 flex items-center gap-2"
+                    className="px-6 py-3 rounded-xl font-bold bg-amber-500 hover:bg-amber-600 text-white shadow-lg shadow-amber-500/30 transition-all hover:-translate-y-1 flex items-center gap-2"
                 >
                     💾 Export Source (.json)
                 </button>

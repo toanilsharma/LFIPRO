@@ -43,8 +43,8 @@ const MarkdownTextarea: React.FC<MarkdownTextareaProps> = ({
     };
 
     return (
-        <div className="relative rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 focus-within:border-indigo-500 focus-within:ring-4 focus-within:ring-indigo-500/20 transition-all duration-300 overflow-hidden">
-            <div className="flex items-center gap-1 p-2 border-b border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-black/20">
+        <div className={`relative rounded-xl border-2 transition-all duration-300 overflow-hidden focus-within:border-indigo-500 focus-within:ring-4 focus-within:ring-indigo-500/20 ${!value ? 'bg-indigo-50/50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-800/60' : 'bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-600'}`}>
+            <div className={`flex items-center gap-1 p-2 border-b transition-colors ${!value ? 'border-indigo-200 dark:border-indigo-800/60 bg-white/50 dark:bg-black/20' : 'border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-black/20'}`}>
                 <button
                     onClick={() => insertFormat('**', '**')}
                     className="p-1.5 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded transition-colors"
@@ -79,7 +79,7 @@ const MarkdownTextarea: React.FC<MarkdownTextareaProps> = ({
                 onChange={onChange}
                 placeholder={placeholder}
                 aria-invalid={invalid}
-                className={`w-full p-4 bg-transparent text-gray-900 dark:text-white text-lg resize-none focus:outline-none ${className || ''}`}
+                className={`w-full p-4 bg-transparent text-gray-900 dark:text-white text-lg resize-none focus:outline-none ${!value ? 'placeholder:text-indigo-400 dark:placeholder:text-indigo-500/70' : ''} ${className || ''}`}
             />
         </div>
     );

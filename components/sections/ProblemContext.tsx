@@ -19,22 +19,22 @@ const FeedbackItem: React.FC<{ status: 'good' | 'warn' | 'error' | 'neutral', ic
         neutral: 'bg-gray-100 dark:bg-gray-800 border-l-gray-400 text-gray-800 dark:text-gray-300',
     };
     return (
-        <div className={`p-4 rounded-xl flex items-center gap-4 border-l-4 shadow-sm ${statusClasses[status]} transition-colors`}>
-            <span className="text-3xl bg-white dark:bg-gray-900 p-2 rounded-full shadow-inner">{icon}</span>
+        <div className={`p-3 rounded-xl flex items-center gap-3 border-l-4 shadow-sm ${statusClasses[status]} transition-colors`}>
+            <span className="text-2xl bg-white dark:bg-gray-900 p-1.5 rounded-full shadow-inner">{icon}</span>
             <div>
-                <span className="text-sm font-bold opacity-70 block uppercase tracking-wider">{label}</span>
-                <span className="text-lg font-bold">{value}</span>
+                <span className="text-xs font-bold opacity-70 block uppercase tracking-wider">{label}</span>
+                <span className="text-base font-bold">{value}</span>
             </div>
         </div>
     );
 };
 
 const SmartTextarea: React.FC<{ id: string, value: string; onChange: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void; placeholder: string; isTextarea?: boolean, required?: boolean }> = ({ id, value, onChange, placeholder, isTextarea = true, required = false }) => (
-    <div className="mb-8 p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors">
-        <label htmlFor={id} className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3 block">
+    <div className="mb-6 p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors">
+        <label htmlFor={id} className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 block">
             {placeholder.split('(')[0].trim()} {required && <span className="text-rose-500 ml-1" title="Required">*</span>}
         </label>
-        <p className="text-gray-500 dark:text-gray-400 mb-4 text-sm font-medium">
+        <p className="text-gray-500 dark:text-gray-400 mb-3 text-xs font-medium">
             {placeholder}
         </p>
         {isTextarea ? (
@@ -46,7 +46,7 @@ const SmartTextarea: React.FC<{ id: string, value: string; onChange: (e: React.C
                 placeholder="Type your answer here..."
             />
         ) : (
-            <input id={id} type="text" value={value} onChange={onChange} placeholder="Type your answer here..." className="w-full p-4 border-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl text-lg transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20" />
+            <input id={id} type="text" value={value} onChange={onChange} placeholder="Type your answer here..." className={`w-full p-3 border-2 rounded-xl text-base transition-all duration-300 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 ${!value ? 'bg-indigo-50/50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-800/60 placeholder:text-indigo-400 dark:placeholder:text-indigo-500/70' : 'bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white'}`} />
         )}
     </div>
 );
@@ -180,12 +180,12 @@ const ProblemContext: React.FC<ProblemContextProps> = ({ lfiData, updateLfiData,
 
     return (
         <div className="animate-fade-in text-gray-900 dark:text-gray-100 max-w-4xl mx-auto">
-            <div className="mb-10 text-center">
-                <span className="inline-block px-4 py-1.5 mb-4 text-sm font-bold tracking-wider text-indigo-700 uppercase bg-indigo-100 dark:bg-indigo-900/50 dark:text-indigo-300 rounded-full">
+            <div className="mb-8 text-center">
+                <span className="inline-block px-4 py-1.5 mb-3 text-sm font-bold tracking-wider text-indigo-700 uppercase bg-indigo-100 dark:bg-indigo-900/50 dark:text-indigo-300 rounded-full">
                     Step 2 of 6
                 </span>
-                <h2 className="text-3xl md:text-4xl font-extrabold mb-4 font-heading">Define the Problem</h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400">
+                <h2 className="text-xl md:text-2xl font-extrabold mb-2 font-heading">Define the Problem</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                     What exactly went wrong? A clear problem definition is 50% of the solution.
                 </p>
             </div>
@@ -194,7 +194,7 @@ const ProblemContext: React.FC<ProblemContextProps> = ({ lfiData, updateLfiData,
                 id="problemTitle"
                 value={problemTitle}
                 onChange={e => updateLfiData({ problemTitle: e.target.value })}
-                placeholder="Give this incident a short, clear Name (e.g., 'High Defect Rate in Welding Process')"
+                placeholder="Give this incident a short, clear Name (e.g., 'Internal Communications Delay' or 'Server Downtime')"
                 isTextarea={false}
                 required
             />
@@ -245,10 +245,10 @@ const ProblemContext: React.FC<ProblemContextProps> = ({ lfiData, updateLfiData,
             </div>
 
             {/* Evidence Uploader Section */}
-            <div className="mb-8 p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors">
+            <div className="mb-6 p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors">
                 <div className="flex justify-between items-start mb-4">
                     <div>
-                        <label className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1 block flex items-center gap-2">
+                        <label className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1 block flex items-center gap-2">
                             <ImageIcon size={22} className="text-indigo-500" />
                             Evidence & Attachments
                         </label>
@@ -305,11 +305,11 @@ const ProblemContext: React.FC<ProblemContextProps> = ({ lfiData, updateLfiData,
                 )}
             </div>
 
-            <div className="bg-indigo-50 dark:bg-indigo-900/20 border-l-4 border-indigo-400 p-6 rounded-r-2xl my-8">
-                <h4 className="font-extrabold text-indigo-800 dark:text-indigo-300 text-lg mb-3 flex items-center gap-2">
-                    <span className="text-2xl">💡</span> {smartExample.title}:
+            <div className="bg-indigo-50 dark:bg-indigo-900/20 border-l-4 border-indigo-400 p-5 rounded-r-2xl my-6">
+                <h4 className="font-extrabold text-indigo-800 dark:text-indigo-300 text-sm mb-1.5 flex items-center gap-2">
+                    <span className="text-lg">💡</span> {smartExample.title}:
                 </h4>
-                <p className="text-indigo-900 dark:text-indigo-100 text-lg leading-relaxed italic bg-white/50 dark:bg-black/20 p-4 rounded-xl">
+                <p className="text-indigo-900 dark:text-indigo-100 text-sm leading-relaxed italic bg-white/50 dark:bg-black/20 p-2.5 rounded-xl">
                     {smartExample.text}
                 </p>
             </div>

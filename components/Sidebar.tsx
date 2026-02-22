@@ -57,8 +57,8 @@ export const getSectionStatus = (section: SectionKey, data: LfiData): SectionSta
 
 const Sidebar: React.FC<SidebarProps> = ({ sections, activeSection, lfiData, onSectionClick }) => {
     return (
-        <div className="glass-panel" style={{ padding: '2rem' }}>
-            <h3 style={{ color: 'var(--text-primary)', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem', marginBottom: '1.5rem' }}>
+        <div className="glass-panel" style={{ padding: '1.25rem' }}>
+            <h3 className="text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-white/10 pb-3 mb-4 text-base font-bold">
                 LFI Builder
             </h3>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -73,26 +73,14 @@ const Sidebar: React.FC<SidebarProps> = ({ sections, activeSection, lfiData, onS
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: index * 0.1 }}
                             onClick={() => onSectionClick(section.id)}
-                            style={{
-                                padding: '1rem',
-                                borderRadius: 'var(--radius-md)',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '1rem',
-                                position: 'relative',
-                                background: isActive ? 'rgba(79, 70, 229, 0.2)' : 'transparent',
-                                border: isActive ? '1px solid rgba(79, 70, 229, 0.5)' : '1px solid transparent',
-                                transition: 'all 0.3s ease',
-                                color: isActive ? 'white' : 'var(--text-secondary)'
-                            }}
-                            whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.05)' }}
+                            className={`px-3 py-2.5 rounded-lg cursor-pointer flex items-center gap-3 relative transition-all duration-300 ${isActive ? 'bg-indigo-50 dark:bg-indigo-500/20 border-indigo-200 dark:border-indigo-500/50 text-indigo-700 dark:text-white border' : 'border border-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5'}`}
+                            whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                         >
-                            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '2rem' }}>
-                                <section.icon size={22} strokeWidth={2} />
+                            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '1.5rem' }}>
+                                <section.icon size={18} strokeWidth={2} />
                             </span>
-                            <span style={{ fontWeight: isActive ? 600 : 400 }}>
+                            <span className={`text-sm ${isActive ? 'font-semibold' : 'font-normal'}`}>
                                 {section.name.substring(3)}
                             </span>
 
@@ -106,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sections, activeSection, lfiData, onS
                                         style={{ position: 'absolute', right: '1rem', color: 'var(--success)' }}
                                         title="Section deeply completed"
                                     >
-                                        <CheckCircle2 size={20} />
+                                        <CheckCircle2 size={16} />
                                     </motion.div>
                                 )}
                                 {status === 'warning' && (
@@ -118,7 +106,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sections, activeSection, lfiData, onS
                                         style={{ position: 'absolute', right: '1rem', color: 'var(--warning)' }}
                                         title="Needs more detail for a 100/100 score"
                                     >
-                                        <AlertTriangle size={20} />
+                                        <AlertTriangle size={16} />
                                     </motion.div>
                                 )}
                             </AnimatePresence>

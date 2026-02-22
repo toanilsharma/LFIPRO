@@ -11,19 +11,19 @@ const painPoints = [
 
 const WhyLfiFails: React.FC = () => {
     return (
-        <section className="py-16">
+        <section className="py-10">
             <div className="max-w-6xl mx-auto">
                 <motion.div
-                    className="text-center md:text-left mb-12"
+                    className="text-center mb-8"
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
                 >
-                    <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900 dark:text-white">
+                    <h2 className="text-2xl md:text-3xl font-extrabold mb-3 text-gray-900 dark:text-white">
                         Why Most Incident Reports <span className="text-rose-500">Fail</span>
                     </h2>
-                    <p className="text-xl text-gray-600 dark:text-gray-300 max-w-5xl">
+                    <p className="text-base text-gray-600 dark:text-gray-300 max-w-4xl">
                         The majority of incident reports are filed and forgotten. Here's why — and how to fix it.
                     </p>
                 </motion.div>
@@ -52,8 +52,8 @@ const WhyLfiFails: React.FC = () => {
                     transition={{ duration: 0.5, delay: 0.5 }}
                 >
                     <ArrowRight size={22} className="text-emerald-500 shrink-0" />
-                    <p className="font-bold text-gray-900 dark:text-white text-lg">
-                        LFI Pro fixes this with structured guidance, real-time quality scoring, and a framework that ensures every report drives real action.
+                    <p className="font-bold text-gray-900 dark:text-gray-100 text-lg">
+                        LFILab fixes this with structured guidance, real-time quality scoring, and a framework that ensures every report drives real action.
                     </p>
                 </motion.div>
             </div>

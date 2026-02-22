@@ -8,7 +8,7 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({ onClick, children, variant = 'primary', disabled = false }) => {
-    const baseClasses = "px-8 py-4 border-none rounded-xl text-lg font-extrabold cursor-pointer transition-all duration-300 inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed";
+    const baseClasses = "px-5 py-2.5 border-none rounded-xl text-base font-bold cursor-pointer transition-all duration-300 inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed";
 
     const variantClasses = {
         primary: 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-600/30 hover:-translate-y-1',

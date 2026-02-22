@@ -14,24 +14,24 @@ interface RootCauseProps {
 const RootCause: React.FC<RootCauseProps> = ({ lfiData, updateLfiData, onNext, onPrev }) => {
     return (
         <div className="animate-fade-in text-gray-900 dark:text-gray-100 max-w-4xl mx-auto">
-            <div className="mb-10 text-center">
-                <span className="inline-block px-4 py-1.5 mb-4 text-sm font-bold tracking-wider text-rose-700 uppercase bg-rose-100 dark:bg-rose-900/50 dark:text-rose-300 rounded-full">
+            <div className="mb-8 text-center">
+                <span className="inline-block px-4 py-1.5 mb-3 text-sm font-bold tracking-wider text-rose-700 uppercase bg-rose-100 dark:bg-rose-900/50 dark:text-rose-300 rounded-full">
                     Step 3 of 6
                 </span>
-                <h2 className="text-3xl md:text-4xl font-extrabold mb-4 font-heading">Find the Root Cause</h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400">
+                <h2 className="text-xl md:text-2xl font-extrabold mb-2 font-heading">Find the Root Cause</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                     Why did the problem happen? Dig deep past the symptoms to find the failure in the system.
                 </p>
             </div>
 
-            <div className="mb-8 p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-rose-300 dark:hover:border-rose-600 transition-colors">
-                <label htmlFor="rcaMethod" className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3 block">RCA Method Used</label>
-                <p className="text-gray-500 dark:text-gray-400 mb-4 text-sm font-medium">Which tool did you use to find the root cause?</p>
+            <div className="mb-6 p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-rose-300 dark:hover:border-rose-600 transition-colors">
+                <label htmlFor="rcaMethod" className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 block">RCA Method Used</label>
+                <p className="text-gray-500 dark:text-gray-400 mb-3 text-xs font-medium">Which tool did you use to find the root cause?</p>
                 <select
                     id="rcaMethod"
                     value={lfiData.rcaMethod}
                     onChange={e => updateLfiData({ rcaMethod: e.target.value })}
-                    className="w-full p-4 border-2 outline-none bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-600 rounded-xl text-lg font-semibold text-gray-900 dark:text-white transition-all duration-300 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20"
+                    className={`w-full p-3 border-2 outline-none rounded-xl text-base font-semibold transition-all duration-300 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20 ${!lfiData.rcaMethod ? 'bg-rose-50/50 dark:bg-rose-900/20 border-rose-200 dark:border-rose-800/60 text-rose-500/70' : 'bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white'}`}
                 >
                     <option value="">Choose a method...</option>
                     <option value="5Why">5 Why Analysis (Easiest)</option>
@@ -44,20 +44,20 @@ const RootCause: React.FC<RootCauseProps> = ({ lfiData, updateLfiData, onNext, o
                 </select>
             </div>
 
-            <div className="mb-12">
-                <label className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3 block flex items-center gap-2">
+            <div className="mb-10">
+                <label className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 block flex items-center gap-2">
                     <span className="text-rose-500">🎯</span> Interactive 5-Whys Builder
                 </label>
-                <p className="text-gray-500 dark:text-gray-400 mb-6 text-sm font-medium">Map out the causal chain layer by layer. The final node will automatically populate your True Root Cause.</p>
+                <p className="text-gray-500 dark:text-gray-400 mb-5 text-xs font-medium">Map out the causal chain layer by layer. The final node will automatically populate your True Root Cause.</p>
                 <FiveWhysGraph
                     initialRootCause={lfiData.rootCause}
                     onRootCauseChange={(value) => updateLfiData({ rootCause: value })}
                 />
             </div>
 
-            <div className="mb-8 p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-rose-300 dark:hover:border-rose-600 transition-colors">
-                <label htmlFor="rootCause" className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3 block">The True Root Cause <span className="text-rose-500" title="Required">*</span></label>
-                <p className="text-gray-500 dark:text-gray-400 mb-4 text-sm font-medium">Describe the fundamental reason WHY the problem occurred. Focus on the process failing, not the person failing. (This is synced with your 5-Whys graph).</p>
+            <div className="mb-6 p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-rose-300 dark:hover:border-rose-600 transition-colors">
+                <label htmlFor="rootCause" className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 block">The True Root Cause <span className="text-rose-500" title="Required">*</span></label>
+                <p className="text-gray-500 dark:text-gray-400 mb-3 text-xs font-medium">Describe the fundamental reason WHY the problem occurred. Focus on the process failing, not the person failing. (This is synced with your 5-Whys graph).</p>
                 <MarkdownTextarea
                     id="rootCause"
                     minRows={6}
@@ -68,11 +68,11 @@ const RootCause: React.FC<RootCauseProps> = ({ lfiData, updateLfiData, onNext, o
                 />
             </div>
 
-            <div className="bg-rose-50 dark:bg-rose-900/20 border-l-4 border-rose-400 p-6 rounded-r-2xl my-8">
-                <h4 className="font-extrabold text-rose-800 dark:text-rose-300 text-lg mb-4 flex items-center gap-2">
-                    <span className="text-2xl">⚠️</span> Find the System, Not the Person
+            <div className="bg-rose-50 dark:bg-rose-900/20 border-l-4 border-rose-400 p-4 rounded-r-2xl my-5">
+                <h4 className="font-extrabold text-rose-800 dark:text-rose-300 text-sm mb-2 flex items-center gap-2">
+                    <span className="text-lg">⚠️</span> Find the System, Not the Person
                 </h4>
-                <div className="text-gray-800 dark:text-gray-200 space-y-4 text-base bg-white/50 dark:bg-black/20 p-5 rounded-xl">
+                <div className="text-gray-800 dark:text-gray-200 space-y-2.5 text-sm bg-white/50 dark:bg-black/20 p-3.5 rounded-xl">
                     <p className="flex items-start gap-3">
                         <strong className="text-red-600 dark:text-red-400 font-bold whitespace-nowrap pt-1">❌ Bad (Blames People):</strong>
                         <span className="italic">"The operator installed the wrong sensor."</span>

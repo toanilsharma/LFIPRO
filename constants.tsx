@@ -16,10 +16,10 @@ export const SECTIONS: Section[] = [
 ];
 
 export const TEMPLATES: Template[] = [
-    { id: 'iso9001', icon: Factory, name: 'ISO 9001 CAPA', description: 'Perfect for manufacturing and quality management systems. Emphasizes corrective and preventive actions.', standards: 'ISO 9001:2015 | ISO/TS 16949' },
+    { id: 'iso9001', icon: Factory, name: 'ISO 9001 CAPA', description: 'Perfect for diverse quality management systems. Emphasizes rigorous corrective and preventive actions.', standards: 'ISO 9001:2015 | Enterprise Quality' },
     { id: 'apqp', icon: CarFront, name: 'APQP/8D', description: 'Automotive industry standard. Team-based problem solving with systematic root cause elimination.', standards: 'APQP | 8D Methodology | AIAG' },
     { id: 'sixsigma', icon: BarChart3, name: 'Six Sigma DMAIC', description: 'Data-driven approach focusing on measurable improvements. Ideal for process optimization.', standards: 'Six Sigma | DMAIC | Lean' },
-    { id: 'a3', icon: Presentation, name: 'A3 Thinking', description: 'Toyota Production System approach. Concise, visual problem-solving focusing on continuous improvement.', standards: 'TPS | Lean Manufacturing | Kaizen' }
+    { id: 'a3', icon: Presentation, name: 'A3 Thinking', description: 'A lean, systemic problem-solving approach. Concise, visual analysis focusing on continuous improvement.', standards: 'Lean Problem Solving | Continuous Improvement' }
 ];
 
 export const TEMPLATE_NAMES: Record<string, string> = TEMPLATES.reduce((acc, t) => {

@@ -23,7 +23,7 @@ const CustomTextInputNode = ({ data, isConnectable }: any) => {
             <div className="flex flex-col">
                 <label className="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-1">{data.label}</label>
                 <textarea
-                    className="w-full text-sm bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded-md p-2 text-gray-800 dark:text-gray-200 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full text-sm rounded-md p-2 resize-none transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-shown:bg-indigo-50/50 dark:placeholder-shown:bg-indigo-900/20 placeholder-shown:border-indigo-200 dark:placeholder-shown:border-indigo-800/60 placeholder-shown:placeholder:text-indigo-400 dark:placeholder-shown:placeholder:text-indigo-500/70 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200"
                     placeholder={data.placeholder}
                     defaultValue={data.value}
                     onChange={(e) => data.onChange(data.id, e.target.value)}
@@ -43,10 +43,10 @@ const RootCauseNode = ({ data, isConnectable }: any) => {
             <Handle type="target" position={Position.Top} isConnectable={isConnectable} className="w-3 h-3 bg-white" />
             <div className="flex flex-col">
                 <label className="text-xs font-black text-rose-100 uppercase tracking-wider mb-1 flex items-center gap-1">
-                    <span className="text-white">🎯</span> {data.label}
+                    <span className="text-white dark:text-white">🎯</span> {data.label}
                 </label>
                 <textarea
-                    className="w-full text-sm bg-white/10 border border-white/20 rounded-md p-2 text-white placeholder-rose-200 resize-none focus:outline-none focus:ring-2 focus:ring-white"
+                    className="w-full text-sm bg-white/10 dark:bg-black/10 border border-white/20 dark:border-black/20 rounded-md p-2 text-white dark:text-white placeholder-rose-200 dark:placeholder-rose-300 resize-none focus:outline-none focus:ring-2 focus:ring-white dark:focus:ring-white"
                     placeholder={data.placeholder}
                     defaultValue={data.value}
                     onChange={(e) => data.onChange(data.id, e.target.value)}

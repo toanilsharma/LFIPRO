@@ -22,7 +22,7 @@ const CustomTooltip = ({ active, payload }: any) => {
         const data = payload[0].payload;
         return (
             <div className="bg-white dark:bg-gray-800 p-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl">
-                <p className="font-bold text-gray-900 dark:text-white mb-2">{data.name} Risk</p>
+                <p className="font-bold text-gray-900 dark:text-gray-100 mb-2">{data.name} Risk</p>
                 <p className="text-sm text-gray-600 dark:text-gray-300">Severity: <span className="font-semibold">{data.y}</span></p>
                 <p className="text-sm text-gray-600 dark:text-gray-300">Likelihood: <span className="font-semibold">{data.x}</span></p>
             </div>
@@ -64,7 +64,7 @@ const RiskMatrix: React.FC<RiskMatrixProps> = ({ data }) => {
 
     return (
         <div className="flex flex-col items-center p-6 bg-white dark:bg-gray-800/50 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700/50 w-full transition-colors duration-300">
-            <h4 className="text-xl font-bold mb-6 text-gray-900 dark:text-white flex items-center gap-2">
+            <h4 className="text-xl font-bold mb-6 text-gray-900 dark:text-gray-100 flex items-center gap-2">
                 <span className="text-indigo-500">📊</span> Interactive Risk Matrix
             </h4>
 

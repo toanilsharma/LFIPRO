@@ -12,18 +12,18 @@ const steps = [
 
 const HowItWorks: React.FC = () => {
     return (
-        <section className="py-16">
+        <section className="py-10">
             <motion.div
-                className="text-center mb-14"
+                className="text-center mb-10"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
             >
-                <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900 dark:text-white">
+                <h2 className="text-2xl md:text-3xl font-extrabold mb-3 text-gray-900 dark:text-gray-100">
                     How It Works
                 </h2>
-                <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                <p className="text-base text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                     Five clear steps to turn any incident into a professional, shareable LFI report.
                 </p>
             </motion.div>
@@ -46,7 +46,7 @@ const HowItWorks: React.FC = () => {
                                 {step.number}
                             </div>
                             <div className="text-indigo-500 dark:text-indigo-400 mb-3">{step.icon}</div>
-                            <h3 className="font-bold text-gray-900 dark:text-white mb-2">{step.title}</h3>
+                            <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-2">{step.title}</h3>
                             <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{step.description}</p>
                         </motion.div>
                     ))}

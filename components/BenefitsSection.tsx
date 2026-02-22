@@ -4,21 +4,21 @@ import { Target, TrendingDown, Clock, CheckCircle } from 'lucide-react';
 
 const BenefitsSection: React.FC = () => {
     return (
-        <section className="mb-24 relative">
+        <section className="mb-14 relative">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 dark:bg-primary/10 rounded-full blur-[100px] -z-10"></div>
 
-            <div className="text-center md:text-left mb-16 max-w-6xl">
+            <div className="text-center mb-10 max-w-5xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
                 >
-                    <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-gray-900 dark:text-white">
-                        Why Choose <span className="gradient-text">LFI Pro?</span>
+                    <h2 className="text-2xl md:text-3xl font-extrabold mb-4 text-gray-900 dark:text-white">
+                        Why Choose <span className="gradient-text">LFILab?</span>
                     </h2>
-                    <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-5xl mx-auto md:mx-0 leading-relaxed mt-6">
-                        Many teams spend too much time on inconsistent incident reports that never lead to real change. LFI Pro helps your team build a consistent, repeatable process that turns every incident into a genuine learning opportunity.
+                    <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed mt-4 text-justify">
+                        Many teams spend too much time on inconsistent incident reports that never lead to real change. LFILab helps your team build a consistent, repeatable process that turns every incident into a genuine learning opportunity.
                     </p>
                 </motion.div>
             </div>
@@ -62,10 +62,10 @@ const BenefitsSection: React.FC = () => {
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 0.5, delay: idx * 0.1 }}
                     >
-                        <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${benefit.bg} ${benefit.color}`}>
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${benefit.bg} ${benefit.color}`}>
                             {benefit.icon}
                         </div>
-                        <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">{benefit.title}</h3>
+                        <h3 className="text-lg font-bold mb-2 text-gray-900 dark:text-white">{benefit.title}</h3>
                         <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{benefit.description}</p>
                     </motion.div>
                 ))}

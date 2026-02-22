@@ -38,12 +38,12 @@ const RiskSlider: React.FC<{ label: string, value: number, onChange: (val: numbe
     const tooltipText = isSeverity ? getSeverityLabel(value) : getLikelihoodLabel(value);
 
     return (
-        <div className="flex flex-col bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm relative group hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors">
-            <label className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-4 flex items-center justify-between">
+        <div className="flex flex-col bg-white dark:bg-gray-800 p-4 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm relative group hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors">
+            <label className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center justify-between">
                 {label}
-                <div className="flex bg-indigo-50 dark:bg-indigo-900/40 rounded-lg px-3 py-1.5 items-center gap-2 border border-indigo-100 dark:border-indigo-800/50">
-                    <span className="font-extrabold text-indigo-700 dark:text-indigo-300 text-lg leading-none">{value}</span>
-                    <span className="text-xs font-bold text-indigo-500 dark:text-indigo-400 uppercase tracking-wide border-l border-indigo-200 dark:border-indigo-700/50 pl-2 leading-none">
+                <div className="flex bg-indigo-50 dark:bg-indigo-900/40 rounded-lg px-2.5 py-1 items-center gap-2 border border-indigo-100 dark:border-indigo-800/50">
+                    <span className="font-extrabold text-indigo-700 dark:text-indigo-300 text-base leading-none">{value}</span>
+                    <span className="text-[10px] font-bold text-indigo-500 dark:text-indigo-400 uppercase tracking-wide border-l border-indigo-200 dark:border-indigo-700/50 pl-2 leading-none">
                         {tooltipText.split(' - ')[1]}
                     </span>
                 </div>
@@ -87,21 +87,21 @@ const Prevention: React.FC<PreventionProps> = ({ lfiData, updateLfiData, onNext,
 
     return (
         <div className="animate-fade-in text-gray-900 dark:text-gray-100 max-w-4xl mx-auto">
-            <div className="mb-10 text-center">
-                <span className="inline-block px-4 py-1.5 mb-4 text-sm font-bold tracking-wider text-teal-700 uppercase bg-teal-100 dark:bg-teal-900/50 dark:text-teal-300 rounded-full">
-                    Step 6 of 7
+            <div className="mb-6 text-center">
+                <span className="inline-block px-3 py-1 mb-2 text-xs font-bold tracking-wider text-teal-700 uppercase bg-teal-100 dark:bg-teal-900/50 dark:text-teal-300 rounded-full">
+                    Step 6 of 6
                 </span>
-                <h2 className="text-3xl md:text-4xl font-extrabold mb-4 font-heading">Prevention & Validation</h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400">
+                <h2 className="text-xl md:text-2xl font-extrabold mb-2 font-heading">Prevention & Validation</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                     How do we know the fix actually worked, and where else should it be applied?
                 </p>
             </div>
 
-            <div className="mb-8 p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-teal-300 dark:hover:border-teal-600 transition-colors">
-                <label htmlFor="validation" className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2 block">
+            <div className="mb-5 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-teal-300 dark:hover:border-teal-600 transition-colors">
+                <label htmlFor="validation" className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1 block">
                     How will you verify effectiveness? <span className="text-rose-500 ml-1" title="Required">*</span>
                 </label>
-                <p className="text-gray-500 dark:text-gray-400 mb-4 text-sm font-medium">How will you measure success? Be specific and concise.</p>
+                <p className="text-gray-500 dark:text-gray-400 mb-2.5 text-[10px] font-medium">How will you measure success? Be specific and concise.</p>
                 <MarkdownTextarea
                     id="validation"
                     minRows={4}
@@ -112,11 +112,11 @@ const Prevention: React.FC<PreventionProps> = ({ lfiData, updateLfiData, onNext,
                 />
             </div>
 
-            <div className="mb-8 p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-teal-300 dark:hover:border-teal-600 transition-colors">
-                <label htmlFor="horizontal" className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2 block">
+            <div className="mb-5 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-teal-300 dark:hover:border-teal-600 transition-colors">
+                <label htmlFor="horizontal" className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1 block">
                     Horizontal Deployment Plan <span className="text-rose-500 ml-1" title="Required">*</span>
                 </label>
-                <p className="text-gray-500 dark:text-gray-400 mb-4 text-sm font-medium">Where else in the company will this fix be applied to prevent identical failures?</p>
+                <p className="text-gray-500 dark:text-gray-400 mb-2.5 text-[10px] font-medium">Where else in the company will this fix be applied to prevent identical failures?</p>
                 <MarkdownTextarea
                     id="horizontal"
                     minRows={4}
@@ -127,15 +127,15 @@ const Prevention: React.FC<PreventionProps> = ({ lfiData, updateLfiData, onNext,
                 />
             </div>
 
-            <div className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 md:p-8 my-8 shadow-inner">
-                <h4 className="font-extrabold text-2xl text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+            <div className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl p-4 md:p-5 my-5 shadow-inner">
+                <h4 className="font-extrabold text-lg text-gray-900 dark:text-white mb-1 flex items-center gap-2">
                     📊 Risk Assessment Matrix
                 </h4>
-                <p className="text-base text-gray-600 dark:text-gray-400 mb-8 font-medium">Use the sliders to visualize the impact of your improvements. (1 = Very Low, 5 = Very High)</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-5 font-medium">Use the sliders to visualize the impact of your improvements. (1 = Very Low, 5 = Very High)</p>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-                    <div className="space-y-6">
-                        <h5 className="font-bold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-3 uppercase tracking-wider text-sm">Interactive Risk Sliders</h5>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div className="space-y-5">
+                        <h5 className="font-bold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-2 uppercase tracking-wider text-[10px]">Interactive Risk Sliders</h5>
                         <RiskSlider
                             label="Severity of Impact"
                             value={riskData.beforeSeverity}

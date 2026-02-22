@@ -63,13 +63,13 @@ const QualityScore: React.FC<QualityScoreProps> = ({ lfiData }) => {
         return '#f43f5e'; // rose-500
     };
 
-    const radius = 60;
+    const radius = 48;
     const circumference = 2 * Math.PI * radius;
     const strokeDashoffset = circumference - (score / 100) * circumference;
 
     return (
         <motion.div
-            className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm flex flex-col items-center relative overflow-hidden"
+            className="bg-white dark:bg-gray-800 rounded-2xl p-4 border border-gray-200 dark:border-gray-700 shadow-sm flex flex-col items-center relative overflow-hidden"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
@@ -86,30 +86,30 @@ const QualityScore: React.FC<QualityScoreProps> = ({ lfiData }) => {
                 )}
             </AnimatePresence>
 
-            <h3 className="font-bold text-gray-800 dark:text-gray-200 mb-6 flex items-center gap-2 z-10">
+            <h3 className="font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2 z-10 text-sm">
                 {score === 100 ? <Trophy className="text-yellow-500" size={20} /> : <Sparkles className="text-primary" size={20} />}
                 Document Quality
             </h3>
 
-            <div className="relative w-40 h-40 mb-4 z-10">
-                <svg width="160" height="160" viewBox="0 0 160 160" className="transform -rotate-90">
+            <div className="relative w-32 h-32 mb-3 z-10">
+                <svg width="128" height="128" viewBox="0 0 128 128" className="transform -rotate-90">
                     {/* Background Track */}
                     <circle
-                        cx="80"
-                        cy="80"
+                        cx="64"
+                        cy="64"
                         r={radius}
                         fill="none"
                         className="stroke-gray-100 dark:stroke-gray-700"
-                        strokeWidth="12"
+                        strokeWidth="10"
                     />
                     {/* Progress Arc */}
                     <motion.circle
-                        cx="80"
-                        cy="80"
+                        cx="64"
+                        cy="64"
                         r={radius}
                         fill="none"
                         stroke={getColor()}
-                        strokeWidth="12"
+                        strokeWidth="10"
                         strokeLinecap="round"
                         strokeDasharray={circumference}
                         initial={{ strokeDashoffset: circumference }}
@@ -124,7 +124,7 @@ const QualityScore: React.FC<QualityScoreProps> = ({ lfiData }) => {
                         key={score} // Forces re-animation on score change
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className={`text-4xl font-extrabold ${score === 100 ? 'text-yellow-500' : 'text-gray-900 dark:text-white'}`}
+                        className={`text-3xl font-extrabold ${score === 100 ? 'text-yellow-500' : 'text-gray-900 dark:text-white'}`}
                     >
                         {score}%
                     </motion.span>

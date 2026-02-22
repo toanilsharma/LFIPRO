@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 
 interface HeaderProps {
-    onNavigate: (view: 'tool' | 'contact' | 'cookie' | 'privacy' | 'terms') => void;
+    onNavigate: (view: 'home' | 'tool' | 'contact' | 'cookie' | 'privacy' | 'terms') => void;
     isDarkMode: boolean;
     toggleDarkMode: () => void;
 }
@@ -24,8 +24,11 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, isDarkMode, toggleDarkMode 
         if (href === 'contact') {
             onNavigate('contact');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
+        } else if (href === '#tool') {
             onNavigate('tool');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            onNavigate('home');
             setTimeout(() => {
                 const targetId = href.substring(1);
                 const targetElement = document.getElementById(targetId);
@@ -41,10 +44,10 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, isDarkMode, toggleDarkMode 
     };
 
     return (
-        <header className="glass-panel mx-4 my-4 p-4 lg:px-8 sticky top-4 z-50 rounded-full">
+        <header className="glass-panel mx-4 my-4 p-4 lg:px-8 z-50 rounded-full">
             <nav className="container" style={{ padding: 0 }}>
                 <div className="flex justify-between items-center w-full">
-                    <a href="#" onClick={(e) => handleNavClick(e, '#tool')} className="flex items-center gap-3 group" style={{ textDecoration: 'none' }}>
+                    <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="flex items-center gap-3 group" style={{ textDecoration: 'none' }}>
                         <div className="relative flex items-center justify-center">
                             <svg width="36" height="36" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-[0_0_15px_rgba(79,70,229,0.5)] group-hover:scale-110 transition-transform duration-300">
                                 <defs>
@@ -64,7 +67,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, isDarkMode, toggleDarkMode 
                                 <circle cx="16" cy="16" r="3" fill="white" className="animate-pulse" />
                             </svg>
                         </div>
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 font-heading text-2xl md:text-3xl font-black tracking-tight m-0 drop-shadow-sm group-hover:opacity-80 transition-opacity">LFI Pro</span>
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 font-heading text-2xl md:text-3xl font-black tracking-tight m-0 drop-shadow-sm group-hover:opacity-80 transition-opacity">LFILab</span>
                     </a>
 
                     <div className="hidden lg:flex items-center gap-8">
@@ -85,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, isDarkMode, toggleDarkMode 
                         </button>
 
                         <motion.button
-                            onClick={(e: any) => handleNavClick(e, '#tool')}
+                            onClick={(e: any) => { e.preventDefault(); onNavigate('tool'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                             className="btn btn-primary hidden md:inline-flex"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}

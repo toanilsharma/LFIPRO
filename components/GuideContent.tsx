@@ -16,7 +16,7 @@ const GuideSection: React.FC<{ section: typeof SECTIONS[0]; children: React.Reac
             <div className="p-3 bg-primary/10 dark:bg-primary/20 rounded-xl text-primary dark:text-indigo-400">
                 {section && <section.icon size={28} strokeWidth={2.5} />}
             </div>
-            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight">
                 {index + 1}. {section.name.substring(3).trim()}
             </h2>
         </div>
@@ -56,7 +56,7 @@ const TipCard: React.FC<{ icon: React.ReactNode; title: string; children: React.
         <div className="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4">
             {icon}
         </div>
-        <h4 className="font-bold text-lg text-gray-900 dark:text-white mb-2">{title}</h4>
+        <h4 className="font-bold text-lg text-gray-900 dark:text-gray-100 mb-2">{title}</h4>
         <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{children}</p>
     </div>
 );
@@ -75,7 +75,7 @@ const GuideContent: React.FC = () => {
                             <div className="w-14 h-14 rounded-xl bg-gray-100 dark:bg-gray-900 text-indigo-500 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
                                 <template.icon size={28} strokeWidth={2} />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{template.name}</h3>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">{template.name}</h3>
                             <p className="text-gray-600 dark:text-gray-400 text-sm md:text-left leading-relaxed mb-4">{template.description}</p>
                             <div className="inline-flex items-center px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-xs font-semibold">
                                 {template.standards}
@@ -162,7 +162,7 @@ const GuideContent: React.FC = () => {
                 </p>
                 <div className="grid md:grid-cols-2 gap-8 mt-8">
                     <div className="p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800">
-                        <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <h4 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
                             <ShieldCheck size={24} className="text-green-500" /> Effectiveness Validation
                         </h4>
                         <p className="text-gray-600 dark:text-gray-400 leading-relaxed italic border-l-4 border-green-500 pl-4 py-2 bg-gray-50 dark:bg-gray-800/50">
@@ -170,7 +170,7 @@ const GuideContent: React.FC = () => {
                         </p>
                     </div>
                     <div className="p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800">
-                        <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <h4 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
                             <Network size={24} className="text-blue-500" /> Horizontal Deployment
                         </h4>
                         <p className="text-gray-600 dark:text-gray-400 leading-relaxed italic border-l-4 border-blue-500 pl-4 py-2 bg-gray-50 dark:bg-gray-800/50">
@@ -187,7 +187,7 @@ const GuideContent: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                     <TipCard icon={<Share2 size={24} />} title="Use Multiple Channels">Combine emails, team meetings, and database entries. Don't rely on a single method.</TipCard>
                     <TipCard icon={<Users size={24} />} title="Target the Audience">Tailor the message for different groups. An operator needs different details than a manager.</TipCard>
-                    <TipCard icon={<Tags size={24} />} title="Use Searchable Tags">Add keywords like 'welding', 'sensor', 'calibration' so others facing similar problems can find your LFI.</TipCard>
+                    <TipCard icon={<Tags size={24} />} title="Use Searchable Tags">Add keywords like 'process', 'software', 'human-factors' so others facing similar problems can find your LFI.</TipCard>
                 </div>
             </GuideSection>
 

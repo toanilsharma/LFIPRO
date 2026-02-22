@@ -38,32 +38,32 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ onBackToTool }) => {
                         <FileText size={32} />
                     </div>
                     <div>
-                        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-2">Terms of Service</h1>
+                        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-2">Terms of Service</h1>
                         <p className="text-gray-500 dark:text-gray-400">Last Updated: October 2026</p>
                     </div>
                 </div>
 
                 <div className="prose prose-lg dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 space-y-8">
                     <p className="lead text-xl">
-                        Welcome to LFI Pro. By accessing or using our incident reporting and intelligence platform, you agree to be bound by these corporate Terms of Service.
+                        Welcome to LFILab. By accessing or using our incident reporting and intelligence platform, you agree to be bound by these corporate Terms of Service.
                     </p>
 
                     <section>
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4 border-b pb-2 border-gray-200 dark:border-gray-800">1. Acceptance of Terms</h2>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4 border-b pb-2 border-gray-200 dark:border-gray-800">1. Acceptance of Terms</h2>
                         <p>
                             By accessing and using this service, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using these particular services, you shall be subject to any posted guidelines or rules applicable to such services.
                         </p>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4 border-b pb-2 border-gray-200 dark:border-gray-800">2. Description of Service</h2>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4 border-b pb-2 border-gray-200 dark:border-gray-800">2. Description of Service</h2>
                         <p>
-                            LFI Pro provides users with an interface to generate, format, and export Learning From Incident (LFI) documents. The service is provided "AS IS" and we assume no responsibility for the timeliness, deletion, mis-delivery, or failure to store any user communications or personalization settings for data generated entirely client-side.
+                            LFILab provides users with an interface to generate, format, and export Learning From Incident (LFI) documents. The service is provided "AS IS" and we assume no responsibility for the timeliness, deletion, mis-delivery, or failure to store any user communications or personalization settings for data generated entirely client-side.
                         </p>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4 border-b pb-2 border-gray-200 dark:border-gray-800">3. User Conduct and Liability</h2>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4 border-b pb-2 border-gray-200 dark:border-gray-800">3. User Conduct and Liability</h2>
                         <p>
                             You agree NOT to use the Service to:
                         </p>
@@ -75,7 +75,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ onBackToTool }) => {
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4 border-b pb-2 border-gray-200 dark:border-gray-800">4. Modifications to Service</h2>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4 border-b pb-2 border-gray-200 dark:border-gray-800">4. Modifications to Service</h2>
                         <p>
                             We reserve the right at any time and from time to time to modify or discontinue, temporarily or permanently, the Service (or any part thereof) with or without notice. You agree that we shall not be liable to you or to any third party for any modification, suspension or discontinuance of the Service.
                         </p>

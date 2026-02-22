@@ -40,9 +40,9 @@ const FaqItem: React.FC<{ question: string; children: React.ReactNode }> = ({ qu
 
 const FaqSection: React.FC = () => {
     return (
-        <section id="faq" className="container text-center md:text-left mx-auto px-6 max-w-6xl">
+        <section id="faq" className="container text-center mx-auto px-6 max-w-6xl">
             <motion.h2
-                className="text-4xl md:text-5xl font-extrabold mb-12 text-gray-900 dark:text-white"
+                className="text-2xl md:text-3xl font-extrabold mb-8 text-gray-900 dark:text-white"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

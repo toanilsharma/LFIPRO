@@ -1,12 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Factory, Flame, Zap, HardHat, Droplets, Wrench } from 'lucide-react';
+import { BookOpen, Building2, GraduationCap, HeartPulse, ShoppingCart, Laptop, Wrench } from 'lucide-react';
 
 const IntroductionSection: React.FC = () => {
     return (
         <section id="lfi-introduction">
             <motion.div
-                className="text-center md:text-left mb-16 max-w-6xl mx-auto md:mx-0 px-6"
+                className="text-center mb-10 max-w-5xl mx-auto px-6"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -16,20 +16,20 @@ const IntroductionSection: React.FC = () => {
                     <BookOpen size={16} />
                     Educational Resource
                 </div>
-                <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-gray-900 dark:text-white">What is an LFI (Learning From Incident)?</h2>
-                <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-5xl mx-auto md:mx-0 leading-relaxed mt-6">
-                    A Learning From Incident (LFI) document captures what happened, why it happened, and what must change to prevent recurrence. High-quality LFIs help organizations strengthen safety culture, improve reliability, and retain operational knowledge.
+                <h2 className="text-2xl md:text-3xl font-extrabold mb-4 text-gray-900 dark:text-gray-100">What is an LFI (Learning From Incident)?</h2>
+                <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed mt-4 text-justify">
+                    A Learning From Incident (LFI) document captures what happened, why it happened, and what must change to prevent recurrence. High-quality LFIs help any organization — regardless of size or sector — strengthen its culture, improve reliability, and retain operational knowledge.
                 </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+            <div className="grid md:grid-cols-2 gap-8 items-center mb-10">
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
                 >
-                    <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Why LFIs Matter</h3>
+                    <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Why LFIs Matter</h3>
                     <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
                         Most companies repeat the same expensive mistakes because they lack a disciplined framework for capturing and sharing lessons. A well-structured LFI breaks that cycle by ensuring that the knowledge gained from every incident is documented, communicated, and acted upon.
                     </p>
@@ -51,22 +51,22 @@ const IntroductionSection: React.FC = () => {
 
             {/* Industries */}
             <motion.div
-                className="mb-16"
+                className="mb-10"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
             >
-                <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white text-center">Used by Teams In</h3>
-                <p className="text-gray-500 dark:text-gray-400 text-center mb-8">Used by teams in manufacturing, power, oil & gas, and heavy industry to standardize incident learning.</p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100 text-center">Used by Teams In</h3>
+                <p className="text-gray-500 dark:text-gray-400 text-center mb-8">Used by teams across every sector to standardize incident learning and drive continuous improvement.</p>
+                <div className="flex flex-wrap justify-center gap-6">
                     {[
-                        { icon: <Factory size={24} />, label: "Manufacturing" },
-                        { icon: <Flame size={24} />, label: "Oil & Gas" },
-                        { icon: <Zap size={24} />, label: "Power Plants" },
-                        { icon: <Droplets size={24} />, label: "Chemical Plants" },
-                        { icon: <HardHat size={24} />, label: "Construction" },
-                        { icon: <Wrench size={24} />, label: "Utilities" },
+                        { icon: <Building2 size={24} />, label: "Corporate & Enterprise" },
+                        { icon: <HeartPulse size={24} />, label: "Healthcare" },
+                        { icon: <GraduationCap size={24} />, label: "Education" },
+                        { icon: <Laptop size={24} />, label: "Technology" },
+                        { icon: <ShoppingCart size={24} />, label: "Retail & Services" },
+                        { icon: <Wrench size={24} />, label: "Manufacturing" },
                     ].map((industry, idx) => (
                         <motion.div
                             key={idx}
@@ -91,7 +91,7 @@ const IntroductionSection: React.FC = () => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.1 }}
                 >
-                    <h4 className="font-bold text-xl mb-2 text-gray-900 dark:text-white">Prevent Repeat Failures</h4>
+                    <h4 className="font-bold text-xl mb-2 text-gray-900 dark:text-gray-100">Prevent Repeat Failures</h4>
                     <p className="text-gray-600 dark:text-gray-400">A well-written LFI solves a problem not just once, but potentially thousands of times by preventing similar failures before they happen.</p>
                 </motion.div>
                 <motion.div
@@ -101,7 +101,7 @@ const IntroductionSection: React.FC = () => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                 >
-                    <h4 className="font-bold text-xl mb-2 text-gray-900 dark:text-white">Retain Operational Knowledge</h4>
+                    <h4 className="font-bold text-xl mb-2 text-gray-900 dark:text-gray-100">Retain Operational Knowledge</h4>
                     <p className="text-gray-600 dark:text-gray-400">When experienced engineers retire or move on, LFIs preserve their hard-won knowledge so the next generation doesn't repeat past mistakes.</p>
                 </motion.div>
                 <motion.div
@@ -111,7 +111,7 @@ const IntroductionSection: React.FC = () => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.3 }}
                 >
-                    <h4 className="font-bold text-xl mb-2 text-gray-900 dark:text-white">Strengthen Safety Culture</h4>
+                    <h4 className="font-bold text-xl mb-2 text-gray-900 dark:text-gray-100">Strengthen Safety Culture</h4>
                     <p className="text-gray-600 dark:text-gray-400">Sharing lessons across teams and sites creates a culture where learning from incidents is the norm, not the exception.</p>
                 </motion.div>
             </div>

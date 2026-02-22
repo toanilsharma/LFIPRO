@@ -51,21 +51,21 @@ const LessonsLearned: React.FC<LessonsLearnedProps> = ({ lfiData, updateLfiData,
 
     return (
         <div className="animate-fade-in text-gray-900 dark:text-gray-100 max-w-4xl mx-auto">
-            <div className="mb-10 text-center">
-                <span className="inline-block px-4 py-1.5 mb-4 text-sm font-bold tracking-wider text-amber-700 uppercase bg-amber-100 dark:bg-amber-900/50 dark:text-amber-300 rounded-full">
+            <div className="mb-6 text-center">
+                <span className="inline-block px-3 py-1 mb-2 text-xs font-bold tracking-wider text-amber-700 uppercase bg-amber-100 dark:bg-amber-900/50 dark:text-amber-300 rounded-full">
                     Step 4 of 6
                 </span>
-                <h2 className="text-3xl md:text-4xl font-extrabold mb-4 font-heading">Capture Lessons Learned</h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400">
+                <h2 className="text-xl md:text-2xl font-extrabold mb-2 font-heading">Capture Lessons Learned</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                     What did this incident teach us? A good lesson is a general principle that can be applied elsewhere.
                 </p>
             </div>
 
-            <div className="bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-400 p-6 rounded-r-2xl mb-8">
-                <h4 className="font-extrabold text-amber-800 dark:text-amber-300 text-lg mb-3 flex items-center gap-2">
-                    <span className="text-2xl">💡</span> Pro Tip: From Root Cause to Lesson
+            <div className="bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-400 p-4 rounded-r-2xl mb-6">
+                <h4 className="font-extrabold text-amber-800 dark:text-amber-300 text-sm mb-1.5 flex items-center gap-2">
+                    <span className="text-lg">💡</span> Pro Tip: From Root Cause to Lesson
                 </h4>
-                <div className="text-gray-800 dark:text-gray-200 space-y-4 text-base bg-white/50 dark:bg-black/20 p-5 rounded-xl">
+                <div className="text-gray-800 dark:text-gray-200 space-y-2.5 text-sm bg-white/50 dark:bg-black/20 p-3.5 rounded-xl">
                     <p className="flex items-start gap-3">
                         <strong className="text-rose-600 dark:text-rose-400 font-bold whitespace-nowrap pt-1">The Root Cause:</strong>
                         <span className="italic">{smartExample.rootCause}</span>
@@ -78,11 +78,11 @@ const LessonsLearned: React.FC<LessonsLearnedProps> = ({ lfiData, updateLfiData,
             </div>
 
             {[0, 1, 2].map(index => (
-                <div key={index} className="mb-8 p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-amber-300 dark:hover:border-amber-600 transition-colors">
-                    <label htmlFor={`lesson${index + 1}`} className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3 block">
+                <div key={index} className="mb-5 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-amber-300 dark:hover:border-amber-600 transition-colors">
+                    <label htmlFor={`lesson${index + 1}`} className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1.5 block">
                         Key Lesson #{index + 1} {index === 0 && <span className="text-rose-500 ml-1" title="Required">*</span>}
                     </label>
-                    <p className="text-gray-500 dark:text-gray-400 mb-4 text-sm font-medium">
+                    <p className="text-gray-500 dark:text-gray-400 mb-2.5 text-[10px] font-medium">
                         {index === 0
                             ? "What is the primary transferable insight?"
                             : index === 1
