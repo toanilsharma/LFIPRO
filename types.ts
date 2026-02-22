@@ -18,8 +18,52 @@ export interface Template {
     standards: string;
 }
 
+export interface TimelineEvent {
+    id: string;
+    time: string;
+    date: string;
+    description: string;
+}
+
+export interface FishboneNode {
+    id: string;
+    text: string;
+}
+
+export interface FishboneData {
+    man: FishboneNode[];
+    machine: FishboneNode[];
+    material: FishboneNode[];
+    method: FishboneNode[];
+    measurement: FishboneNode[];
+    environment: FishboneNode[];
+}
+
+export interface MatrixConfig {
+    size: 3 | 4 | 5;
+    severityLabels: string[];
+    likelihoodLabels: string[];
+}
+
+export interface ActionItem {
+    id: string;
+    type: 'Immediate' | 'Corrective' | 'Systemic';
+    description: string;
+    owner: string;
+    department?: string;
+    dueDate: string;
+    status: 'Open' | 'In Progress' | 'Closed';
+}
+
+export interface CustomField {
+    id: string;
+    label: string;
+    value: string;
+}
+
 export interface LfiData {
     template: TemplateKey | null;
+    incidentComplexity?: 'minor' | 'major';
     teamMembers: string;
     problemTitle: string;
     problemStatement: string;
@@ -35,9 +79,15 @@ export interface LfiData {
     distribution: string;
     tags: string;
     images: string[];
+    timelineEvents: TimelineEvent[];
+    actionItems?: ActionItem[];
+    distributionMatrix?: Record<string, boolean>;
+    fishboneData?: FishboneData;
+    customFields?: CustomField[];
     riskAssessment?: {
         beforeSeverity: number;
         beforeLikelihood: number;
         afterLikelihood: number;
     } | null;
+    matrixConfig?: MatrixConfig;
 }

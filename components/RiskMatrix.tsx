@@ -1,19 +1,23 @@
 import React, { useMemo } from 'react';
 import { ScatterChart, Scatter, XAxis, YAxis, ZAxis, CartesianGrid, ReferenceArea, ReferenceLine, Tooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
 
+import { MatrixConfig } from '../types';
+
 interface RiskMatrixProps {
     data: {
         beforeSeverity: number;
         beforeLikelihood: number;
         afterLikelihood: number;
-    }
+    };
+    config?: MatrixConfig;
 }
 
-const getRiskLevelText = (severity: number, likelihood: number): string => {
+const getRiskLevelText = (severity: number, likelihood: number, size: number): string => {
     const riskScore = severity * likelihood;
-    if (riskScore >= 15) return 'High';
-    if (riskScore >= 10) return 'Medium';
-    if (riskScore >= 5) return 'Low';
+    const maxScore = size * size;
+    if (riskScore >= maxScore * 0.6) return 'High';
+    if (riskScore >= maxScore * 0.4) return 'Medium';
+    if (riskScore >= maxScore * 0.2) return 'Low';
     return 'Very Low';
 };
 
@@ -31,25 +35,31 @@ const CustomTooltip = ({ active, payload }: any) => {
     return null;
 };
 
-const RiskMatrix: React.FC<RiskMatrixProps> = ({ data }) => {
+const RiskMatrix: React.FC<RiskMatrixProps> = ({ data, config }) => {
     const { beforeSeverity, beforeLikelihood, afterLikelihood } = data;
-    const beforeRiskText = getRiskLevelText(beforeSeverity, beforeLikelihood);
-    const afterRiskText = getRiskLevelText(beforeSeverity, afterLikelihood);
+    const size = config?.size || 5;
+    const bSeverity = Math.min(beforeSeverity, size);
+    const bLikelihood = Math.min(beforeLikelihood, size);
+    const aLikelihood = Math.min(afterLikelihood, size);
+
+    const beforeRiskText = getRiskLevelText(bSeverity, bLikelihood, size);
+    const afterRiskText = getRiskLevelText(bSeverity, aLikelihood, size);
 
     const scatterData = [
-        { name: 'Before', x: beforeLikelihood, y: beforeSeverity, z: 200, fill: '#EF4444' }, // Red-500
-        { name: 'After', x: afterLikelihood, y: beforeSeverity, z: 200, fill: '#10B981' } // Emerald-500
+        { name: 'Before', x: bLikelihood, y: bSeverity, z: 200, fill: '#EF4444' }, // Red-500
+        { name: 'After', x: aLikelihood, y: bSeverity, z: 200, fill: '#10B981' } // Emerald-500
     ];
 
     const areas = useMemo(() => {
         const arr = [];
-        for (let x = 1; x <= 5; x++) {
-            for (let y = 1; y <= 5; y++) {
+        const maxScore = size * size;
+        for (let x = 1; x <= size; x++) {
+            for (let y = 1; y <= size; y++) {
                 const score = x * y;
                 let color = 'rgba(16, 185, 129, 0.1)'; // Green
-                if (score >= 15) color = 'rgba(239, 68, 68, 0.15)'; // Red
-                else if (score >= 10) color = 'rgba(249, 115, 22, 0.15)'; // Orange
-                else if (score >= 5) color = 'rgba(250, 204, 21, 0.15)'; // Yellow
+                if (score >= maxScore * 0.6) color = 'rgba(239, 68, 68, 0.15)'; // Red
+                else if (score >= maxScore * 0.4) color = 'rgba(249, 115, 22, 0.15)'; // Orange
+                else if (score >= maxScore * 0.2) color = 'rgba(250, 204, 21, 0.15)'; // Yellow
 
                 arr.push(
                     <React.Fragment key={`${x}-${y}`}>
@@ -60,7 +70,7 @@ const RiskMatrix: React.FC<RiskMatrixProps> = ({ data }) => {
             }
         }
         return arr;
-    }, []);
+    }, [size]);
 
     return (
         <div className="flex flex-col items-center p-6 bg-white dark:bg-gray-800/50 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700/50 w-full transition-colors duration-300">
@@ -76,9 +86,9 @@ const RiskMatrix: React.FC<RiskMatrixProps> = ({ data }) => {
                             type="number"
                             dataKey="x"
                             name="Likelihood"
-                            domain={[0.5, 5.5]}
-                            ticks={[1, 2, 3, 4, 5]}
-                            tickFormatter={(tick) => ['Very Low', 'Low', 'Moderate', 'High', 'Very High'][tick - 1] || ''}
+                            domain={[0.5, size + 0.5]}
+                            ticks={Array.from({ length: size }, (_, i) => i + 1)}
+                            tickFormatter={(tick) => config?.likelihoodLabels[tick - 1]?.split(' - ')[0] || tick.toString()}
                             stroke="rgba(156, 163, 175, 0.5)"
                             tick={{ fill: 'var(--text-secondary)' }}
                         />
@@ -86,9 +96,9 @@ const RiskMatrix: React.FC<RiskMatrixProps> = ({ data }) => {
                             type="number"
                             dataKey="y"
                             name="Severity"
-                            domain={[0.5, 5.5]}
-                            ticks={[1, 2, 3, 4, 5]}
-                            tickFormatter={(tick) => ['Very Low', 'Low', 'Moderate', 'High', 'Very High'][tick - 1] || ''}
+                            domain={[0.5, size + 0.5]}
+                            ticks={Array.from({ length: size }, (_, i) => i + 1)}
+                            tickFormatter={(tick) => config?.severityLabels[tick - 1]?.split(' - ')[0] || tick.toString()}
                             stroke="rgba(156, 163, 175, 0.5)"
                             tick={{ fill: 'var(--text-secondary)' }}
                         />
@@ -98,7 +108,7 @@ const RiskMatrix: React.FC<RiskMatrixProps> = ({ data }) => {
                         {areas}
 
                         <ReferenceLine
-                            segment={[{ x: beforeLikelihood, y: beforeSeverity }, { x: afterLikelihood, y: beforeSeverity }]}
+                            segment={[{ x: bLikelihood, y: bSeverity }, { x: aLikelihood, y: bSeverity }]}
                             stroke="currentColor"
                             className="text-gray-400 dark:text-gray-500"
                             strokeWidth={2}

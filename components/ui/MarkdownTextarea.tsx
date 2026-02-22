@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
-import { Bold, Italic, List } from 'lucide-react';
+import { Bold, Italic, List, Heading, Quote, Link } from 'lucide-react';
 
 interface MarkdownTextareaProps {
     id: string;
@@ -69,6 +69,32 @@ const MarkdownTextarea: React.FC<MarkdownTextareaProps> = ({
                     type="button"
                 >
                     <List size={16} />
+                </button>
+                <div className="w-px h-4 bg-gray-300 dark:bg-gray-700 mx-1"></div>
+                <button
+                    onClick={() => insertFormat('\n### ')}
+                    className="p-1.5 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded transition-colors"
+                    title="Heading"
+                    type="button"
+                >
+                    <Heading size={16} />
+                </button>
+                <div className="w-px h-4 bg-gray-300 dark:bg-gray-700 mx-1"></div>
+                <button
+                    onClick={() => insertFormat('\n> ')}
+                    className="p-1.5 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded transition-colors"
+                    title="Quote"
+                    type="button"
+                >
+                    <Quote size={16} />
+                </button>
+                <button
+                    onClick={() => insertFormat('[', '](url)')}
+                    className="p-1.5 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded transition-colors"
+                    title="Link"
+                    type="button"
+                >
+                    <Link size={16} />
                 </button>
             </div>
             <TextareaAutosize

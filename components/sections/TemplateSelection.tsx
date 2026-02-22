@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 
 interface TemplateSelectionProps {
     lfiData: LfiData;
+    updateLfiData: (data: Partial<LfiData>) => void;
     onTemplateSelect: (template: TemplateKey) => void;
     onNext: () => void;
 }
@@ -70,18 +71,22 @@ const TemplateCard: React.FC<{ template: typeof TEMPLATES[0]; isSelected: boolea
 };
 
 
-const TemplateSelection: React.FC<TemplateSelectionProps> = ({ lfiData, onTemplateSelect, onNext }) => {
+const TemplateSelection: React.FC<TemplateSelectionProps> = ({ lfiData, updateLfiData, onTemplateSelect, onNext }) => {
     const [viewingSample, setViewingSample] = useState<TemplateKey | null>(null);
 
     const handleTemplateSelectAndNext = (templateId: TemplateKey) => {
         onTemplateSelect(templateId);
+        // Default to major if not set
+        if (!lfiData.incidentComplexity) {
+            updateLfiData({ incidentComplexity: 'major' });
+        }
         setTimeout(() => {
             onNext();
         }, 500); // 500ms delay for visual feedback before auto-advancing
     };
 
     return (
-        <div className="animate-fade-in text-gray-900 dark:text-gray-100">
+        <div className="animate-fade-in text-gray-900 dark:text-gray-100 pb-10">
             {viewingSample && (
                 <SampleLfiModal templateId={viewingSample} onClose={() => setViewingSample(null)} />
             )}
@@ -113,6 +118,53 @@ const TemplateSelection: React.FC<TemplateSelectionProps> = ({ lfiData, onTempla
                     <span className="text-xl">⚠️</span>
                     Please select one of the formats above to unlock the next step.
                 </div>
+            )}
+
+            {lfiData.template && (
+                <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700 max-w-2xl mx-auto"
+                >
+                    <div className="mb-4 text-center">
+                        <h3 className="text-lg font-bold mb-1">Incident Complexity</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                            Does this require a full Root Cause Analysis (Major) or just a quick action plan (Minor)?
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <label className={`cursor-pointer rounded-xl p-4 border-2 transition-all text-center flex flex-col items-center gap-2 ${lfiData.incidentComplexity === 'minor' ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20' : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'}`}>
+                            <input
+                                type="radio"
+                                name="complexity"
+                                className="hidden"
+                                checked={lfiData.incidentComplexity === 'minor'}
+                                onChange={() => updateLfiData({ incidentComplexity: 'minor' })}
+                            />
+                            <span className={`text-2xl ${lfiData.incidentComplexity === 'minor' ? 'text-emerald-500' : 'text-gray-400 max-w-full opacity-50'}`}>⚡</span>
+                            <div>
+                                <h4 className={`font-bold ${lfiData.incidentComplexity === 'minor' ? 'text-emerald-700 dark:text-emerald-400' : 'text-gray-700 dark:text-gray-300'}`}>Minor Issue</h4>
+                                <p className="text-xs text-gray-500 mt-1">Skips Fishbone & Risk Matrix</p>
+                            </div>
+                        </label>
+
+                        <label className={`cursor-pointer rounded-xl p-4 border-2 transition-all text-center flex flex-col items-center gap-2 ${lfiData.incidentComplexity === 'major' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'}`}>
+                            <input
+                                type="radio"
+                                name="complexity"
+                                className="hidden"
+                                checked={lfiData.incidentComplexity === 'major'}
+                                onChange={() => updateLfiData({ incidentComplexity: 'major' })}
+                            />
+                            <span className={`text-2xl ${lfiData.incidentComplexity === 'major' ? 'text-indigo-500' : 'text-gray-400 max-w-full opacity-50'}`}>🔍</span>
+                            <div>
+                                <h4 className={`font-bold ${lfiData.incidentComplexity === 'major' ? 'text-indigo-700 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300'}`}>Major Incident</h4>
+                                <p className="text-xs text-gray-500 mt-1">Full 6-Step RCA Process</p>
+                            </div>
+                        </label>
+                    </div>
+                </motion.div>
             )}
 
             <div className="mt-8">

@@ -3,6 +3,8 @@ import React from 'react';
 import { LfiData } from '../types';
 import { marked } from 'marked';
 
+import { PrintConfig } from './sections/ReviewExport';
+
 // Configure marked to break on newlines like standard text areas
 marked.setOptions({
     breaks: true,
@@ -11,6 +13,7 @@ marked.setOptions({
 
 interface LfiPreviewContentProps {
     lfiData: LfiData;
+    printConfig?: PrintConfig;
 }
 
 const renderMarkdown = (text: string | undefined): string => {
@@ -58,20 +61,46 @@ const generateRiskMatrixHTML = (riskAssessment: LfiData['riskAssessment']): stri
     return table;
 }
 
-const generatePreviewHTML = (lfiData: LfiData) => {
+const generatePreviewHTML = (lfiData: LfiData, printConfig?: PrintConfig) => {
+
+    // Default config values (all true) if none provided
+    const config = printConfig || { showTeam: true, showTimeline: true, showPhotos: true, showMatrix: true };
+
     let imagesHtml = '';
-    if (lfiData.images && lfiData.images.length > 0) {
+    if (config.showPhotos && lfiData.images && lfiData.images.length > 0) {
         imagesHtml = `<div class="mt-4 print:break-inside-avoid"><p><strong>Evidence attached:</strong></p><div class="flex gap-4 mt-2 print-evidence">${lfiData.images.map(src => `<img src="${src}" style="max-height:200px; border-radius:8px; border:1px solid #e5e7eb;" />`).join('')}</div></div>`;
     }
 
+    let customFieldsHtml = '';
+    if (lfiData.customFields && lfiData.customFields.length > 0) {
+        customFieldsHtml = `<div class="mt-4 print:break-inside-avoid"><div class="grid grid-cols-2 md:grid-cols-3 gap-4">${lfiData.customFields.map(f => `<div class="bg-gray-50 border border-gray-200 p-2 rounded-md"><span class="text-xs font-bold text-gray-500 uppercase block">${f.label}</span><span class="text-sm font-semibold">${f.value || 'N/A'}</span></div>`).join('')}</div></div>`;
+    }
+
+    let teamHtml = '';
+    if (config.showTeam) {
+        teamHtml = `<p class="mt-2"><strong>Team Members / Contributors:</strong> ${renderMarkdown(lfiData.teamMembers).replace(/<p>|<\/p>/g, '')}</p>`;
+    }
+
+    let timelineHtml = '';
+    if (config.showTimeline && lfiData.timelineEvents && lfiData.timelineEvents.length > 0) {
+        const sortedEvents = [...lfiData.timelineEvents].sort((a, b) => {
+            const dateA = new Date(`${a.date}T${a.time}`);
+            const dateB = new Date(`${b.date}T${b.time}`);
+            return dateA.getTime() - dateB.getTime();
+        });
+        timelineHtml = `<div class="mt-6 print:break-inside-avoid"><h4 class="font-bold border-b border-gray-300 pb-1 mb-2">Sequence of Events</h4><div class="ml-4 border-l-2 border-gray-300 pl-4 py-2 space-y-3">
+            ${sortedEvents.map(e => `<div><span class="font-bold text-gray-700 mr-2">${e.date} ${e.time}</span><span>${e.description}</span></div>`).join('')}
+        </div></div>`;
+    }
+
     return `
-        <div class="mb-8"><h3 class="font-bold border-b-2 pb-2 mb-4 text-lg" style="color:var(--primary)">1. PROBLEM IDENTIFICATION & TEAM</h3><div class="print:break-inside-avoid"><p><strong>Title:</strong> ${renderMarkdown(lfiData.problemTitle).replace(/<p>|<\/p>/g, '')}</p><p class="mt-2"><strong>Team Members / Contributors:</strong> ${renderMarkdown(lfiData.teamMembers).replace(/<p>|<\/p>/g, '')}</p></div><div class="mt-4 print:break-inside-avoid"><p><strong>Description:</strong></p><div class="leading-relaxed prose prose-sm max-w-none text-gray-900">${renderMarkdown(lfiData.problemStatement)}</div></div>${imagesHtml}</div>
+        <div class="mb-8"><h3 class="font-bold border-b-2 pb-2 mb-4 text-lg" style="color:var(--primary)">1. PROBLEM IDENTIFICATION & TEAM</h3><div class="print:break-inside-avoid"><p><strong>Title:</strong> ${renderMarkdown(lfiData.problemTitle).replace(/<p>|<\/p>/g, '')}</p>${teamHtml}</div>${customFieldsHtml}<div class="mt-4 print:break-inside-avoid"><p><strong>Description:</strong></p><div class="leading-relaxed prose prose-sm max-w-none text-gray-900">${renderMarkdown(lfiData.problemStatement)}</div></div>${timelineHtml}${imagesHtml}</div>
         <div class="mb-8"><h3 class="font-bold border-b-2 pb-2 mb-4 text-lg" style="color:var(--primary)">2. ROOT CAUSE ANALYSIS</h3><div class="print:break-inside-avoid"><p><strong>Method Used:</strong> ${renderMarkdown(lfiData.rcaMethod || 'Not specified').replace(/<p>|<\/p>/g, '')}</p><p class="mt-4"><strong>Root Cause Identified:</strong></p><div class="leading-relaxed prose prose-sm max-w-none text-gray-900">${renderMarkdown(lfiData.rootCause)}</div></div></div>
         <div class="mb-8"><h3 class="font-bold border-b-2 pb-2 mb-4 text-lg" style="color:var(--primary)">3. LESSONS LEARNED</h3>${lfiData.lessons.filter(l => l).map((lesson, i) => `<div class="mb-4 print:break-inside-avoid"><p><strong>Lesson ${i + 1}:</strong></p><div class="leading-relaxed bg-gray-100 p-4 rounded-md mt-2 prose prose-sm max-w-none text-gray-900">${renderMarkdown(lesson)}</div></div>`).join('') || '<div class="print:break-inside-avoid"><p>No lessons entered.</p></div>'}</div>
         <div class="mb-8 print-break-before"><h3 class="font-bold border-b-2 pb-2 mb-4 text-lg" style="color:var(--primary)">4. IMPLEMENTATION ACTIONS</h3><div class="print:break-inside-avoid"><p><strong>Immediate Actions:</strong></p><div class="leading-relaxed mb-4 prose prose-sm max-w-none text-gray-900">${renderMarkdown(lfiData.immediateAction)}</div></div><div class="print:break-inside-avoid"><p><strong>Corrective Actions:</strong></p><div class="leading-relaxed mb-4 prose prose-sm max-w-none text-gray-900">${renderMarkdown(lfiData.correctiveAction)}</div></div><div class="print:break-inside-avoid"><p><strong>Systemic Improvements:</strong></p><div class="leading-relaxed prose prose-sm max-w-none text-gray-900">${renderMarkdown(lfiData.systemicAction)}</div></div></div>
         <div class="mb-8"><h3 class="font-bold border-b-2 pb-2 mb-4 text-lg" style="color:var(--primary)">5. PREVENTION & VALIDATION</h3><div class="print:break-inside-avoid"><p><strong>Effectiveness Validation:</strong></p><div class="leading-relaxed mb-4 prose prose-sm max-w-none text-gray-900">${renderMarkdown(lfiData.validation)}</div></div><div class="print:break-inside-avoid"><p><strong>Horizontal Deployment:</strong></p><div class="leading-relaxed prose prose-sm max-w-none text-gray-900">${renderMarkdown(lfiData.horizontal)}</div></div></div>
         <div class="mb-8"><h3 class="font-bold border-b-2 pb-2 mb-4 text-lg" style="color:var(--primary)">6. KNOWLEDGE SHARING</h3><div class="print:break-inside-avoid"><p><strong>Distribution Plan:</strong></p><div class="leading-relaxed prose prose-sm max-w-none text-gray-900">${renderMarkdown(lfiData.distribution)}</div></div>${lfiData.tags ? `<div class="mt-4 print:break-inside-avoid"><p><strong>Keywords:</strong> ${renderMarkdown(lfiData.tags).replace(/<p>|<\/p>/g, '')}</p></div>` : ''}</div>
-        ${generateRiskMatrixHTML(lfiData.riskAssessment)}
+        ${config.showMatrix ? generateRiskMatrixHTML(lfiData.riskAssessment) : ''}
         <div class="mt-12 pt-8 border-t border-gray-200 print:break-inside-avoid flex flex-col items-center text-center">
             <h4 class="font-bold text-gray-500 uppercase tracking-widest text-sm mb-4">Generated &amp; Secured by LFILab</h4>
             <div class="flex gap-4">
@@ -85,8 +114,8 @@ const generatePreviewHTML = (lfiData: LfiData) => {
     `;
 };
 
-const LfiPreviewContent: React.FC<LfiPreviewContentProps> = ({ lfiData }) => {
-    const htmlContent = generatePreviewHTML(lfiData);
+const LfiPreviewContent: React.FC<LfiPreviewContentProps> = ({ lfiData, printConfig }) => {
+    const htmlContent = generatePreviewHTML(lfiData, printConfig);
     return (
         <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
     );

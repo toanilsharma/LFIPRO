@@ -5,6 +5,9 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#4F46E5" />
+  <link rel="apple-touch-icon" href="/vite.svg" />
   <title>LFILab - Learn From Every Incident</title>
 
   <!-- Restoring Tailwind for inner components, configuring explicit dark mode -->
@@ -42,6 +45,20 @@
 <body class="bg-gray-50 dark:bg-darkbg text-gray-900 dark:text-gray-100 transition-colors duration-300">
   <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').then(
+          (registration) => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          },
+          (err) => {
+            console.log('ServiceWorker registration failed: ', err);
+          }
+        );
+      });
+    }
+  </script>
 </body>
 
 </html>

@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LfiData } from '../../types';
 import SectionControls from '../ui/SectionControls';
 import MarkdownTextarea from '../ui/MarkdownTextarea';
-import { Upload, Trash2, Image as ImageIcon } from 'lucide-react';
+import TimelineBuilder from '../ui/TimelineBuilder';
+import ImageCropper from '../ui/ImageCropper';
+import { Upload, Trash2, Image as ImageIcon, Plus } from 'lucide-react';
+import { CustomField } from '../../types';
 
 interface ProblemContextProps {
     lfiData: LfiData;
@@ -53,6 +56,26 @@ const SmartTextarea: React.FC<{ id: string, value: string; onChange: (e: React.C
 
 const ProblemContext: React.FC<ProblemContextProps> = ({ lfiData, updateLfiData, onNext, onPrev }) => {
     const { problemTitle, problemStatement, teamMembers } = lfiData;
+    const customFields = lfiData.customFields || [];
+    const [pendingCropImages, setPendingCropImages] = useState<string[]>([]);
+
+    const handleAddCustomField = () => {
+        const newField: CustomField = {
+            id: Math.random().toString(36).substring(2, 9),
+            label: 'New Field',
+            value: ''
+        };
+        updateLfiData({ customFields: [...customFields, newField] });
+    };
+
+    const handleUpdateCustomField = (id: string, key: 'label' | 'value', val: string) => {
+        const updated = customFields.map(f => f.id === id ? { ...f, [key]: val } : f);
+        updateLfiData({ customFields: updated });
+    };
+
+    const handleRemoveCustomField = (id: string) => {
+        updateLfiData({ customFields: customFields.filter(f => f.id !== id) });
+    };
 
     const titleLength = problemTitle.length;
     const statementWords = problemStatement.trim().split(/\s+/).filter(Boolean).length;
@@ -62,43 +85,29 @@ const ProblemContext: React.FC<ProblemContextProps> = ({ lfiData, updateLfiData,
         const files = Array.from(e.target.files || []);
         if (files.length === 0) return;
 
-        if (lfiData.images.length + files.length > 3) {
+        if ((lfiData.images?.length || 0) + files.length > 3) {
             alert('Maximum 3 images allowed to keep the report lightweight.');
             return;
         }
 
+        const newImages: string[] = [];
+        let loadedCount = 0;
+
         files.forEach((file: File) => {
-            if (!file.type.startsWith('image/')) return;
+            if (!file.type.startsWith('image/')) {
+                loadedCount++;
+                if (loadedCount === files.length && newImages.length > 0) setPendingCropImages(newImages);
+                return;
+            }
 
             const reader = new FileReader();
             reader.onload = (event) => {
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    let width = img.width;
-                    let height = img.height;
-                    const MAX_DIM = 800;
-
-                    if (width > height && width > MAX_DIM) {
-                        height *= MAX_DIM / width;
-                        width = MAX_DIM;
-                    } else if (height > MAX_DIM) {
-                        width *= MAX_DIM / height;
-                        height = MAX_DIM;
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    if (ctx) {
-                        ctx.drawImage(img, 0, 0, width, height);
-                        // Compress to 60% quality JPEG to save local storage space
-                        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
-                        updateLfiData({ images: [...(lfiData.images || []), compressedBase64] });
-                    }
-                };
                 if (event.target?.result) {
-                    img.src = event.target.result as string;
+                    newImages.push(event.target.result as string);
+                }
+                loadedCount++;
+                if (loadedCount === files.length && newImages.length > 0) {
+                    setPendingCropImages(newImages);
                 }
             };
             reader.readAsDataURL(file);
@@ -106,6 +115,15 @@ const ProblemContext: React.FC<ProblemContextProps> = ({ lfiData, updateLfiData,
 
         // Reset input
         e.target.value = '';
+    };
+
+    const handleCropComplete = (croppedBase64: string) => {
+        updateLfiData({ images: [...(lfiData.images || []), croppedBase64] });
+        setPendingCropImages(prev => prev.slice(1));
+    };
+
+    const handleCropCancel = () => {
+        setPendingCropImages(prev => prev.slice(1));
     };
 
     const removeImage = (indexToRemove: number) => {
@@ -216,6 +234,47 @@ const ProblemContext: React.FC<ProblemContextProps> = ({ lfiData, updateLfiData,
                 required={false}
             />
 
+            <div className="mb-8">
+                <div className="flex justify-between items-center mb-4 px-1">
+                    <div>
+                        <label className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                            Custom Metadata
+                        </label>
+                        <p className="text-gray-500 dark:text-gray-400 text-xs font-medium mt-1">
+                            Add specific fields like Shift, Machine ID, or Part Number.
+                        </p>
+                    </div>
+                    <button onClick={handleAddCustomField} className="flex items-center gap-1.5 px-3 py-2 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 font-bold text-sm rounded-xl hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition-colors border border-indigo-200 dark:border-indigo-800">
+                        <Plus size={16} strokeWidth={3} /> Add Field
+                    </button>
+                </div>
+                {customFields.length > 0 && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {customFields.map((field) => (
+                            <div key={field.id} className="p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm relative group hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors animate-fade-in">
+                                <button onClick={() => handleRemoveCustomField(field.id)} className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-rose-500 rounded-full hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors opacity-0 group-hover:opacity-100" title="Remove Field">
+                                    <Trash2 size={14} />
+                                </button>
+                                <input
+                                    type="text"
+                                    value={field.label}
+                                    onChange={(e) => handleUpdateCustomField(field.id, 'label', e.target.value)}
+                                    className="w-[85%] bg-transparent text-xs font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 focus:outline-none focus:text-indigo-600 dark:focus:text-indigo-400 border-b border-dashed border-transparent hover:border-gray-300 focus:border-indigo-300 dark:focus:border-indigo-700 pb-1 transition-colors"
+                                    placeholder="Label (e.g. Shift)"
+                                />
+                                <input
+                                    type="text"
+                                    value={field.value}
+                                    onChange={(e) => handleUpdateCustomField(field.id, 'value', e.target.value)}
+                                    className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all font-semibold"
+                                    placeholder="Value"
+                                />
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+
             <SmartTextarea
                 id="problemStatement"
                 value={problemStatement}
@@ -243,6 +302,11 @@ const ProblemContext: React.FC<ProblemContextProps> = ({ lfiData, updateLfiData,
                     value={clarityFeedback.value}
                 />
             </div>
+
+            <TimelineBuilder
+                events={lfiData.timelineEvents || []}
+                onChange={(events) => updateLfiData({ timelineEvents: events })}
+            />
 
             {/* Evidence Uploader Section */}
             <div className="mb-6 p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors">
@@ -315,6 +379,14 @@ const ProblemContext: React.FC<ProblemContextProps> = ({ lfiData, updateLfiData,
             </div>
 
             <SectionControls onPrev={onPrev} onNext={onNext} nextDisabled={titleLength < 5 || statementWords < 10} />
+
+            {pendingCropImages.length > 0 && (
+                <ImageCropper
+                    imageSrc={pendingCropImages[0]}
+                    onComplete={handleCropComplete}
+                    onCancel={handleCropCancel}
+                />
+            )}
         </div>
     );
 };

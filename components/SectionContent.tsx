@@ -50,7 +50,7 @@ const SectionContent: React.FC<SectionContentProps> = (props) => {
 
         switch (currentSection) {
             case 'template':
-                return <TemplateSelection lfiData={lfiData} onTemplateSelect={onTemplateSelect} onNext={onNext} />;
+                return <TemplateSelection lfiData={lfiData} updateLfiData={updateLfiData} onTemplateSelect={onTemplateSelect} onNext={onNext} />;
             case 'problem':
                 return <ProblemContext {...sectionProps} />;
             case 'rootcause':

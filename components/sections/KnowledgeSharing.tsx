@@ -1,7 +1,6 @@
 import React from 'react';
 import { LfiData } from '../../types';
 import SectionControls from '../ui/SectionControls';
-import MarkdownTextarea from '../ui/MarkdownTextarea';
 
 interface KnowledgeSharingProps {
     lfiData: LfiData;
@@ -11,6 +10,8 @@ interface KnowledgeSharingProps {
 }
 
 const audiences = ['Production', 'Quality', 'Maintenance', 'Engineering', 'Management', 'Global'];
+const departments = ['Operations', 'Maintenance', 'Quality', 'Safety', 'Executive'];
+const matrixActions = ['Notify Only', 'Toolbox Talk', 'Detailed Training', 'SOP Sign-off'];
 
 const KnowledgeSharing: React.FC<KnowledgeSharingProps> = ({ lfiData, updateLfiData, onNext, onPrev }) => {
 
@@ -21,6 +22,17 @@ const KnowledgeSharing: React.FC<KnowledgeSharingProps> = ({ lfiData, updateLfiD
             ? [...currentAudiences, value]
             : currentAudiences.filter(audience => audience !== value);
         updateLfiData({ audience: newAudiences });
+    };
+
+    const handleMatrixChange = (dept: string, action: string) => {
+        const key = `${dept}-${action}`;
+        const currentMatrix = lfiData.distributionMatrix || {};
+        updateLfiData({
+            distributionMatrix: {
+                ...currentMatrix,
+                [key]: !currentMatrix[key]
+            }
+        });
     };
 
     return (
@@ -64,15 +76,42 @@ const KnowledgeSharing: React.FC<KnowledgeSharingProps> = ({ lfiData, updateLfiD
             </div>
 
             <div className="mb-5 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
-                <label htmlFor="distribution" className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1 block">Distribution & Training Plan</label>
-                <p className="text-gray-500 dark:text-gray-400 mb-2.5 text-[10px] font-medium">How exactly will you share this? Provide a concrete plan.</p>
-                <MarkdownTextarea
-                    id="distribution"
-                    minRows={4}
-                    value={lfiData.distribution}
-                    onChange={e => updateLfiData({ distribution: e.target.value })}
-                    placeholder="E.g., 1. Present at Weekly Production Meeting. 2. Add to Quality Knowledge Base portal..."
-                />
+                <label className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1 block">Distribution & Training Matrix</label>
+                <p className="text-gray-500 dark:text-gray-400 mb-4 text-[10px] font-medium">How exactly will you share this? Select required actions per department.</p>
+
+                <div className="overflow-x-auto border border-gray-200 dark:border-gray-700 rounded-xl">
+                    <table className="w-full text-left border-collapse min-w-[600px]">
+                        <thead>
+                            <tr>
+                                <th className="p-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-xs font-bold text-gray-500 uppercase tracking-wider">Department</th>
+                                {matrixActions.map(action => (
+                                    <th key={action} className="p-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">{action}</th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {departments.map((dept, idx) => (
+                                <tr key={dept} className="border-b last:border-0 border-gray-100 dark:border-gray-700/50 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-colors">
+                                    <td className="p-3 text-sm font-bold text-gray-700 dark:text-gray-300">{dept}</td>
+                                    {matrixActions.map(action => {
+                                        const key = `${dept}-${action}`;
+                                        const isChecked = !!(lfiData.distributionMatrix && lfiData.distributionMatrix[key]);
+                                        return (
+                                            <td key={action} className="p-3 text-center">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={isChecked}
+                                                    onChange={() => handleMatrixChange(dept, action)}
+                                                    className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 cursor-pointer transition-colors"
+                                                />
+                                            </td>
+                                        );
+                                    })}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div className="mb-6 p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
